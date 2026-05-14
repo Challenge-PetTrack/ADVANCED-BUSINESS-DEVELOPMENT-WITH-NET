@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetTrack.API", "PetTrack.API\PetTrack.API.csproj", "{CCD98011-381D-4EDF-960D-4FB0EEDDE92D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetTrack.Application", "PetTrack.Application\PetTrack.Application.csproj", "{54DE7781-B7AE-4B12-965E-998647BD6FEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetTrack.Domain", "PetTrack.Domain\PetTrack.Domain.csproj", "{F16ACC13-877F-4F18-BA6B-B890F5F4A647}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetTrack.Infrastructure", "PetTrack.Infrastructure\PetTrack.Infrastructure.csproj", "{CC154956-6341-4CB3-9DF1-3B07DE04B0C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCD98011-381D-4EDF-960D-4FB0EEDDE92D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD98011-381D-4EDF-960D-4FB0EEDDE92D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD98011-381D-4EDF-960D-4FB0EEDDE92D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD98011-381D-4EDF-960D-4FB0EEDDE92D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54DE7781-B7AE-4B12-965E-998647BD6FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54DE7781-B7AE-4B12-965E-998647BD6FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54DE7781-B7AE-4B12-965E-998647BD6FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54DE7781-B7AE-4B12-965E-998647BD6FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F16ACC13-877F-4F18-BA6B-B890F5F4A647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F16ACC13-877F-4F18-BA6B-B890F5F4A647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F16ACC13-877F-4F18-BA6B-B890F5F4A647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F16ACC13-877F-4F18-BA6B-B890F5F4A647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC154956-6341-4CB3-9DF1-3B07DE04B0C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC154956-6341-4CB3-9DF1-3B07DE04B0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC154956-6341-4CB3-9DF1-3B07DE04B0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC154956-6341-4CB3-9DF1-3B07DE04B0C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
