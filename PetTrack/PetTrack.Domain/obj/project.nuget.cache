@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "gP0DczDhUFw=",
+  "dgSpecHash": "CKreJLwZMQQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Domain\\PetTrack.Domain.csproj",
+  "projectFilePath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/PetTrack.Domain.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Sbrana\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512"
+    "/Users/waidemannn_m/.nuget/packages/bcrypt.net-next/4.1.0/bcrypt.net-next.4.1.0.nupkg.sha512"
   ],
   "logs": []
 }

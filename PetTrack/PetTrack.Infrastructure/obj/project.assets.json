@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net10.0": {
+      "BCrypt.Net-Next/4.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/BCrypt.Net-Next.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/BCrypt.Net-Next.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Humanizer.Core/2.14.1": {
         "type": "package",
         "compile": {
@@ -937,10 +950,65 @@
         "build": {
           "buildTransitive/net6.0/_._": {}
         }
+      },
+      "PetTrack.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "PetTrack.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/PetTrack.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PetTrack.Application.dll": {}
+        }
+      },
+      "PetTrack.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "BCrypt.Net-Next": "4.1.0"
+        },
+        "compile": {
+          "bin/placeholder/PetTrack.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PetTrack.Domain.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "BCrypt.Net-Next/4.1.0": {
+      "sha512": "5YT3DKllmtkyW68PjURu/V1TOe4MKiByKwsRNVcfYE1S5KuFTeozdmKzyNzolKiQF391OXCaQtINvYT3j1ERzQ==",
+      "type": "package",
+      "path": "bcrypt.net-next/4.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bcrypt.net-next.4.1.0.nupkg.sha512",
+        "bcrypt.net-next.nuspec",
+        "ico.png",
+        "lib/net10.0/BCrypt.Net-Next.dll",
+        "lib/net10.0/BCrypt.Net-Next.xml",
+        "lib/net20/BCrypt.Net-Next.dll",
+        "lib/net20/BCrypt.Net-Next.xml",
+        "lib/net35/BCrypt.Net-Next.dll",
+        "lib/net35/BCrypt.Net-Next.xml",
+        "lib/net462/BCrypt.Net-Next.dll",
+        "lib/net462/BCrypt.Net-Next.xml",
+        "lib/net472/BCrypt.Net-Next.dll",
+        "lib/net472/BCrypt.Net-Next.xml",
+        "lib/net48/BCrypt.Net-Next.dll",
+        "lib/net48/BCrypt.Net-Next.xml",
+        "lib/netstandard2.0/BCrypt.Net-Next.dll",
+        "lib/netstandard2.0/BCrypt.Net-Next.xml",
+        "lib/netstandard2.1/BCrypt.Net-Next.dll",
+        "lib/netstandard2.1/BCrypt.Net-Next.xml",
+        "readme.md"
+      ]
+    },
     "Humanizer.Core/2.14.1": {
       "sha512": "lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw==",
       "type": "package",
@@ -2816,6 +2884,16 @@
         "system.security.cryptography.protecteddata.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "PetTrack.Application/1.0.0": {
+      "type": "project",
+      "path": "../PetTrack.Application/PetTrack.Application.csproj",
+      "msbuildProject": "../PetTrack.Application/PetTrack.Application.csproj"
+    },
+    "PetTrack.Domain/1.0.0": {
+      "type": "project",
+      "path": "../PetTrack.Domain/PetTrack.Domain.csproj",
+      "msbuildProject": "../PetTrack.Domain/PetTrack.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2823,36 +2901,43 @@
       "Microsoft.EntityFrameworkCore >= 9.0.14",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.14",
       "Microsoft.EntityFrameworkCore.Relational >= 9.0.14",
-      "Oracle.EntityFrameworkCore >= 9.23.60"
+      "Oracle.EntityFrameworkCore >= 9.23.60",
+      "PetTrack.Application >= 1.0.0",
+      "PetTrack.Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sbrana\\.nuget\\packages\\": {}
+    "/Users/waidemannn_m/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Infrastructure\\PetTrack.Infrastructure.csproj",
+      "projectUniqueName": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Infrastructure/PetTrack.Infrastructure.csproj",
       "projectName": "PetTrack.Infrastructure",
-      "projectPath": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Infrastructure\\PetTrack.Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\Sbrana\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Infrastructure\\obj\\",
+      "projectPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Infrastructure/PetTrack.Infrastructure.csproj",
+      "packagesPath": "/Users/waidemannn_m/.nuget/packages/",
+      "outputPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Infrastructure/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Sbrana\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/waidemannn_m/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/PetTrack.Application.csproj": {
+              "projectPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/PetTrack.Application.csproj"
+            },
+            "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/PetTrack.Domain.csproj": {
+              "projectPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/PetTrack.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -2906,7 +2991,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.202/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

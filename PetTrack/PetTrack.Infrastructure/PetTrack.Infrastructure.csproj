@@ -16,4 +16,13 @@
       <PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.60" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PetTrack.Application\PetTrack.Application.csproj" />
+      <ProjectReference Include="..\PetTrack.Domain\PetTrack.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Persistence\Repositories\" />
+    </ItemGroup>
+
 </Project>

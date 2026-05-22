@@ -1,35 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Application\\PetTrack.Application.csproj": {}
+    "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/PetTrack.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Application\\PetTrack.Application.csproj": {
+    "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/PetTrack.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Application\\PetTrack.Application.csproj",
+        "projectUniqueName": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/PetTrack.Application.csproj",
         "projectName": "PetTrack.Application",
-        "projectPath": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Application\\PetTrack.Application.csproj",
-        "packagesPath": "C:\\Users\\Sbrana\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Application\\obj\\",
+        "projectPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/PetTrack.Application.csproj",
+        "packagesPath": "/Users/waidemannn_m/.nuget/packages/",
+        "outputPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Sbrana\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/waidemannn_m/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Domain\\PetTrack.Domain.csproj": {
-                "projectPath": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Domain\\PetTrack.Domain.csproj"
+              "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/PetTrack.Domain.csproj": {
+                "projectPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/PetTrack.Domain.csproj"
               }
             }
           }
@@ -65,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.202/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -343,24 +341,22 @@
         }
       }
     },
-    "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Domain\\PetTrack.Domain.csproj": {
+    "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/PetTrack.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Domain\\PetTrack.Domain.csproj",
+        "projectUniqueName": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/PetTrack.Domain.csproj",
         "projectName": "PetTrack.Domain",
-        "projectPath": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Domain\\PetTrack.Domain.csproj",
-        "packagesPath": "C:\\Users\\Sbrana\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Sbrana\\RiderProjects\\PetTrack\\PetTrack.Domain\\obj\\",
+        "projectPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/PetTrack.Domain.csproj",
+        "packagesPath": "/Users/waidemannn_m/.nuget/packages/",
+        "outputPath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Sbrana\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/waidemannn_m/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -406,7 +402,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.202/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
