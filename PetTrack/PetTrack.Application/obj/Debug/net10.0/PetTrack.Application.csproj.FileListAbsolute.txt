@@ -1,0 +1,16 @@
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/bin/Debug/net10.0/PetTrack.Application.deps.json
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/bin/Debug/net10.0/PetTrack.Application.dll
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/bin/Debug/net10.0/PetTrack.Application.pdb
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/bin/Debug/net10.0/PetTrack.Domain.dll
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/bin/Debug/net10.0/PetTrack.Domain.pdb
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.Application.csproj.AssemblyReference.cache
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.Application.AssemblyInfoInputs.cache
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.Application.AssemblyInfo.cs
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.Application.csproj.CoreCompileInputs.cache
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.Application.sourcelink.json
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.70295B66.Up2Date
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.Application.dll
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/refint/PetTrack.Application.dll
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/PetTrack.Application.pdb
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Application/obj/Debug/net10.0/ref/PetTrack.Application.dll

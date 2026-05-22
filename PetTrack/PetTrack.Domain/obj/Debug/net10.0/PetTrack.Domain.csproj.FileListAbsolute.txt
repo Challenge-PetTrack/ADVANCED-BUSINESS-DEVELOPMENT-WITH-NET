@@ -1,0 +1,13 @@
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/PetTrack.Domain.csproj.AssemblyReference.cache
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/PetTrack.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/PetTrack.Domain.AssemblyInfoInputs.cache
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/PetTrack.Domain.AssemblyInfo.cs
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/PetTrack.Domain.csproj.CoreCompileInputs.cache
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/PetTrack.Domain.sourcelink.json
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/bin/Debug/net10.0/PetTrack.Domain.deps.json
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/bin/Debug/net10.0/PetTrack.Domain.dll
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/bin/Debug/net10.0/PetTrack.Domain.pdb
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/PetTrack.Domain.dll
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/refint/PetTrack.Domain.dll
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/PetTrack.Domain.pdb
+/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Domain/obj/Debug/net10.0/ref/PetTrack.Domain.dll

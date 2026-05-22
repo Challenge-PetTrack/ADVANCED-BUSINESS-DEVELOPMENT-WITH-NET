@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PetTrack.API</name>
+    </assembly>
+    <members>
+        <member name="T:PetTrack.Domain.Program">
+            <summary>
+            Ponto de entrada da aplicação.
+            Configura e executa o pipeline da API ASP.NET Core.
+            </summary>
+        </member>
+        <member name="M:PetTrack.Domain.Program.Main(System.String[])">
+            <summary>
+            Inicializa a aplicação, registra serviços e configura o pipeline HTTP.
+            </summary>
+            <param name="args">Argumentos de inicialização da aplicação.</param>
+        </member>
+    </members>
+</doc>
