@@ -54,7 +54,7 @@ public class EventoClinico
     }
 
     /// <summary>Atualiza todos os campos editáveis do evento clínico. Usado no PUT.</summary>
-    public void trnasferir(
+    public void Transferir(
         TipoEventoClinicoEnum tipo,
         DateTime dataEvento,
         string? diagnostico,

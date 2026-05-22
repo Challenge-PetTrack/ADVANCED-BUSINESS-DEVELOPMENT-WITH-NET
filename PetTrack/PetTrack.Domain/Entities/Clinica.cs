@@ -56,7 +56,7 @@ public class Clinica
     }
 
     /// <summary>Atualiza todos os campos editáveis da clínica. Usado no PUT.</summary>
-    public void transferir(
+    public void Transferir(
         string nome,
         string cnpj,
         string? email,

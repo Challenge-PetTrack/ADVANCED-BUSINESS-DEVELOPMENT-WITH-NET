@@ -92,7 +92,7 @@ public class Pet
     }
 
     /// <summary>Atualiza todos os campos editáveis do pet. Usado no PUT.</summary>
-    public void transferir(
+    public void Transferir(
         string nome,
         string especie,
         string? raca,

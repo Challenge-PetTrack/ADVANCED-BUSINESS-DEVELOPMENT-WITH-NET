@@ -44,7 +44,7 @@ public class Tutor
     }
     
     /// <summary>Atualiza todos os campos editáveis do tutor (usado no PUT).</summary>
-    public void transferir(string nome, string email, string? telefone, string? endereco)
+    public void Transferir(string nome, string email, string? telefone, string? endereco)
     {
         UpdateNome(nome);
         UpdateEmail(email);

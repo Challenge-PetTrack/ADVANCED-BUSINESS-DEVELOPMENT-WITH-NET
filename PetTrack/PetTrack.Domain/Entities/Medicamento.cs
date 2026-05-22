@@ -52,7 +52,7 @@ public class Medicamento
     }
 
     /// <summary>Atualiza todos os campos editáveis do medicamento. Usado no PUT.</summary>
-    public void Atualizar(
+    public void Transferir(
         string nome,
         string dosagem,
         string frequencia,

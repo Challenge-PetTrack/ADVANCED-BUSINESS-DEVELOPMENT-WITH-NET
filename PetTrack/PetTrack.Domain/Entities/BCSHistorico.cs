@@ -43,7 +43,7 @@ public class BCSHistorico
     }
 
     /// <summary>Atualiza todos os campos editáveis do BCS. Usado no PUT.</summary>
-    public void transferir(
+    public void Transferir(
         int? bcs,
         string? fotoUrl,
         string? observacao)

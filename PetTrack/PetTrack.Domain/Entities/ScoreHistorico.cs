@@ -34,7 +34,7 @@ public class ScoreHistorico
     }
 
     /// <summary>Atualiza todos os campos editáveis do score. Usado no PUT.</summary>
-    public void transferir(double score, string? observacao, Pet pet)
+    public void Transferir(double score, string? observacao, Pet pet)
     {
         UpdateScore(score);
         UpdateObservacao(observacao);

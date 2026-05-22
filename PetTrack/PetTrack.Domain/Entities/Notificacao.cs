@@ -53,7 +53,7 @@ public class Notificacao
     }
 
     /// <summary>Atualiza todos os campos editáveis da notificação. Usado no PUT.</summary>
-    public void transferir(
+    public void Transferir(
         TipoNotificacaoEnum tipo,
         string titulo,
         string? mensagem,

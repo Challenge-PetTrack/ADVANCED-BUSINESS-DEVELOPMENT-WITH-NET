@@ -48,7 +48,7 @@ public class ProtocoloPreventivo
     }
 
     /// <summary>Atualiza todos os campos editáveis do protocolo. Usado no PUT.</summary>
-    public void transferir(
+    public void Transferir(
         TipoProtocoloPreventivoEnum tipo,
         string nome,
         DateTime? dateAplicacao,

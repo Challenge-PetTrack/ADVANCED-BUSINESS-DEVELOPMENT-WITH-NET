@@ -49,7 +49,7 @@ public class Alerta
     }
 
     /// <summary>Atualiza todos os campos editáveis do alerta. Usado no PUT.</summary>
-    public void Atualizar(
+    public void Transferir(
         TipoAlertaEnum tipo,
         string? descricao,
         double? valor,

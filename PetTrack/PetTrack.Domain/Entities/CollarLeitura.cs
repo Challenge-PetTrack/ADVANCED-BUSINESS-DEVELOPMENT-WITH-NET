@@ -43,7 +43,7 @@ public class CollarLeitura
     }
 
     /// <summary>Atualiza todos os campos editáveis da leitura. Usado no PUT.</summary>
-    public void transferir(
+    public void Transferir(
         double temperatura,
         double? atividade,
         string? topicoMqtt)
