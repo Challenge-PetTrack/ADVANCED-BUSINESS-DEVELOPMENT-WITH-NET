@@ -4,6 +4,561 @@
         <name>PetTrack.API</name>
     </assembly>
     <members>
+        <member name="T:PetTrack.API.Controllers.AdesoesMedicamentoController">
+            <summary>
+            CRUD de Adesões ao Medicamento.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AdesoesMedicamentoController.#ctor(PetTrack.Application.Interfaces.Services.IAdesaoMedicamentoService)">
+            <summary>
+            CRUD de Adesões ao Medicamento.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AdesoesMedicamentoController.Create(PetTrack.Application.DTO.Requests.AdesaoMedicamentoRequest)">
+            <summary>
+            Cria uma nova Adesão ao Medicamento.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AdesoesMedicamentoController.GetAll">
+            <summary>
+            Lista todas as Adesões ao Medicamento.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AdesoesMedicamentoController.GetById(System.Int64)">
+            <summary>
+            Retorna uma Adesão pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AdesoesMedicamentoController.GetByMedicamento(System.Int64)">
+            <summary>
+            Retorna Adesões pelo id do Medicamento.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AdesoesMedicamentoController.GetByStatus(PetTrack.Domain.Enum.SimNaoEnum)">
+            <summary>
+            Retorna Adesões pelo status.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AdesoesMedicamentoController.Update(System.Int64,PetTrack.Application.DTO.Requests.AdesaoMedicamentoRequest)">
+            <summary>
+            Atualiza os dados de uma Adesão existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AdesoesMedicamentoController.Delete(System.Int64)">
+            <summary>
+            Remove uma Adesão pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.AlertasController">
+            <summary>
+            CRUD de Alertas.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AlertasController.#ctor(PetTrack.Application.Interfaces.Services.IAlertaService)">
+            <summary>
+            CRUD de Alertas.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AlertasController.Create(PetTrack.Application.DTO.Requests.AlertaRequest)">
+            <summary>
+            Cria um novo Alerta.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AlertasController.GetAll">
+            <summary>
+            Lista todos os Alertas.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AlertasController.GetById(System.Int64)">
+            <summary>
+            Retorna um Alerta pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AlertasController.GetByTipo(PetTrack.Domain.Enum.TipoAlertaEnum)">
+            <summary>
+            Retorna Alertas pelo tipo.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AlertasController.GetPendentesByPet(System.Int64)">
+            <summary>
+            Retorna Alertas pendentes por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AlertasController.Update(System.Int64,PetTrack.Application.DTO.Requests.AlertaRequest)">
+            <summary>
+            Atualiza os dados de um Alerta existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.AlertasController.Delete(System.Int64)">
+            <summary>
+            Remove um Alerta pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.BcsHistoricosController">
+            <summary>
+            CRUD de Histórico de BCS (Body Condition Score).
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.BcsHistoricosController.#ctor(PetTrack.Application.Interfaces.Services.IBcsHistoricoService)">
+            <summary>
+            CRUD de Histórico de BCS (Body Condition Score).
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.BcsHistoricosController.Create(PetTrack.Application.DTO.Requests.BCSHistoricoRequest)">
+            <summary>
+            Cria um novo registro de BCS.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.BcsHistoricosController.GetAll">
+            <summary>
+            Lista todos os registros de BCS.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.BcsHistoricosController.GetById(System.Int64)">
+            <summary>
+            Retorna um registro de BCS pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.BcsHistoricosController.GetHistoricoByPet(System.Int64)">
+            <summary>
+            Retorna histórico de BCS por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.BcsHistoricosController.GetMediaByPet(System.Int64)">
+            <summary>
+            Retorna a média de BCS por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.BcsHistoricosController.Update(System.Int64,PetTrack.Application.DTO.Requests.BCSHistoricoRequest)">
+            <summary>
+            Atualiza os dados de um registro de BCS existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.BcsHistoricosController.Delete(System.Int64)">
+            <summary>
+            Remove um registro de BCS pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.ClinicasController">
+            <summary>
+            CRUD de Clínicas Veterinárias.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ClinicasController.#ctor(PetTrack.Application.Interfaces.Services.IClinicaService)">
+            <summary>
+            CRUD de Clínicas Veterinárias.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ClinicasController.Create(PetTrack.Application.DTO.Requests.ClinicaRequest)">
+            <summary>
+            Cria uma nova Clínica.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ClinicasController.GetAll">
+            <summary>
+            Lista todas as Clínicas.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ClinicasController.GetById(System.Int64)">
+            <summary>
+            Retorna uma Clínica pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ClinicasController.GetByNomeOuCnpj(System.String)">
+            <summary>
+            Retorna Clínicas pelo nome ou CNPJ.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ClinicasController.GetByNomePet(System.String)">
+            <summary>
+            Retorna Clínicas pelo nome de um pet cadastrado.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ClinicasController.Update(System.Int64,PetTrack.Application.DTO.Requests.ClinicaRequest)">
+            <summary>
+            Atualiza os dados de uma Clínica existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ClinicasController.Delete(System.Int64)">
+            <summary>
+            Remove uma Clínica pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.CollarLeiturasController">
+            <summary>
+            CRUD de Leituras do Collar IoT.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.CollarLeiturasController.#ctor(PetTrack.Application.Interfaces.Services.ICollarLeituraService)">
+            <summary>
+            CRUD de Leituras do Collar IoT.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.CollarLeiturasController.Create(PetTrack.Application.DTO.Requests.CollarLeituraRequest)">
+            <summary>
+            Cria uma nova Leitura do Collar.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.CollarLeiturasController.GetAll">
+            <summary>
+            Lista todas as Leituras do Collar.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.CollarLeiturasController.GetById(System.Int64)">
+            <summary>
+            Retorna uma Leitura pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.CollarLeiturasController.GetByTemperatura(System.Int64,System.Double)">
+            <summary>
+            Retorna Leituras por pet com temperatura acima de um valor.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.CollarLeiturasController.GetUltimaByPet(System.Int64)">
+            <summary>
+            Retorna a última Leitura registrada por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.CollarLeiturasController.Update(System.Int64,PetTrack.Application.DTO.Requests.CollarLeituraRequest)">
+            <summary>
+            Atualiza os dados de uma Leitura existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.CollarLeiturasController.Delete(System.Int64)">
+            <summary>
+            Remove uma Leitura pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.EventosClinicosController">
+            <summary>
+            CRUD de Eventos Clínicos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.EventosClinicosController.#ctor(PetTrack.Application.Interfaces.Services.IEventoClinicoService)">
+            <summary>
+            CRUD de Eventos Clínicos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.EventosClinicosController.Create(PetTrack.Application.DTO.Requests.EventoClinicoRequest)">
+            <summary>
+            Cria um novo Evento Clínico.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.EventosClinicosController.GetAll">
+            <summary>
+            Lista todos os Eventos Clínicos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.EventosClinicosController.GetById(System.Int64)">
+            <summary>
+            Retorna um Evento Clínico pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.EventosClinicosController.GetByTipo(PetTrack.Domain.Enum.TipoEventoClinicoEnum)">
+            <summary>
+            Retorna Eventos Clínicos pelo tipo.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.EventosClinicosController.GetEventosComMedicamentos(System.Int64)">
+            <summary>
+            Retorna Eventos Clínicos com medicamentos por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.EventosClinicosController.Update(System.Int64,PetTrack.Application.DTO.Requests.EventoClinicoRequest)">
+            <summary>
+            Atualiza os dados de um Evento Clínico existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.EventosClinicosController.Delete(System.Int64)">
+            <summary>
+            Remove um Evento Clínico pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.MedicamentosController">
+            <summary>
+            CRUD de Medicamentos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.MedicamentosController.#ctor(PetTrack.Application.Interfaces.Services.IMedicamentoService)">
+            <summary>
+            CRUD de Medicamentos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.MedicamentosController.Create(PetTrack.Application.DTO.Requests.MedicamentoRequest)">
+            <summary>
+            Cria um novo Medicamento.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.MedicamentosController.GetAll">
+            <summary>
+            Lista todos os Medicamentos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.MedicamentosController.GetById(System.Int64)">
+            <summary>
+            Retorna um Medicamento pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.MedicamentosController.GetByNome(System.String)">
+            <summary>
+            Retorna Medicamentos pelo nome.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.MedicamentosController.GetMedicamentosAtivosByPet(System.Int64)">
+            <summary>
+            Retorna Medicamentos ativos por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.MedicamentosController.Update(System.Int64,PetTrack.Application.DTO.Requests.MedicamentoRequest)">
+            <summary>
+            Atualiza os dados de um Medicamento existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.MedicamentosController.Delete(System.Int64)">
+            <summary>
+            Remove um Medicamento pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.NotificacoesController">
+            <summary>
+            CRUD de Notificações.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.#ctor(PetTrack.Application.Interfaces.Services.INotificacaoService)">
+            <summary>
+            CRUD de Notificações.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.Create(PetTrack.Application.DTO.Requests.NotificacaoRequest)">
+            <summary>
+            Cria uma nova Notificação.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.GetAll">
+            <summary>
+            Lista todas as Notificações.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.GetById(System.Int64)">
+            <summary>
+            Retorna uma Notificação pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.GetByStatus(PetTrack.Domain.Enum.SimNaoEnum)">
+            <summary>
+            Retorna Notificações pelo status.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.GetByTipo(PetTrack.Domain.Enum.TipoNotificacaoEnum)">
+            <summary>
+            Retorna Notificações pelo tipo.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.GetUrgentesNaoLidasByTutor(System.Int64)">
+            <summary>
+            Retorna Notificações urgentes não lidas por Tutor.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.Update(System.Int64,PetTrack.Application.DTO.Requests.NotificacaoRequest)">
+            <summary>
+            Atualiza os dados de uma Notificação existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.NotificacoesController.Delete(System.Int64)">
+            <summary>
+            Remove uma Notificação pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.PetsController">
+            <summary>
+            CRUD de Pets.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.#ctor(PetTrack.Application.Interfaces.Services.IPetService)">
+            <summary>
+            CRUD de Pets.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.Create(PetTrack.Application.DTO.Requests.PetRequest)">
+            <summary>
+            Cria um novo Pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.GetAll">
+            <summary>
+            Lista todos os Pets.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.GetById(System.Int64)">
+            <summary>
+            Retorna um Pet pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.GetByClinica(System.Int64)">
+            <summary>
+            Retorna Pets pela clínica.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.GetBySexo(PetTrack.Domain.Enum.SexoPetEnum)">
+            <summary>
+            Retorna Pets pelo sexo.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.GetByNomeOuEspecie(System.String)">
+            <summary>
+            Retorna Pets pelo nome ou espécie.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.GetPetsComAlertasPendentes">
+            <summary>
+            Retorna Pets com alertas pendentes.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.Update(System.Int64,PetTrack.Application.DTO.Requests.PetRequest)">
+            <summary>
+            Atualiza os dados de um Pet existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.PetsController.Delete(System.Int64)">
+            <summary>
+            Remove um Pet pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.ProtocolosPreventivosController">
+            <summary>
+            CRUD de Protocolos Preventivos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ProtocolosPreventivosController.#ctor(PetTrack.Application.Interfaces.Services.IProtocoloPreventivoService)">
+            <summary>
+            CRUD de Protocolos Preventivos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ProtocolosPreventivosController.Create(PetTrack.Application.DTO.Requests.ProtocoloPreventivoRequest)">
+            <summary>
+            Cria um novo Protocolo Preventivo.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ProtocolosPreventivosController.GetAll">
+            <summary>
+            Lista todos os Protocolos Preventivos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ProtocolosPreventivosController.GetById(System.Int64)">
+            <summary>
+            Retorna um Protocolo Preventivo pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ProtocolosPreventivosController.GetByTipo(PetTrack.Domain.Enum.TipoProtocoloPreventivoEnum)">
+            <summary>
+            Retorna Protocolos Preventivos pelo tipo.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ProtocolosPreventivosController.GetPendentesOuAtrasadosByPet(System.Int64)">
+            <summary>
+            Retorna Protocolos pendentes ou atrasados por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ProtocolosPreventivosController.Update(System.Int64,PetTrack.Application.DTO.Requests.ProtocoloPreventivoRequest)">
+            <summary>
+            Atualiza os dados de um Protocolo Preventivo existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ProtocolosPreventivosController.Delete(System.Int64)">
+            <summary>
+            Remove um Protocolo Preventivo pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.ScoresHistoricoController">
+            <summary>
+            CRUD de Histórico de Scores de Saúde.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ScoresHistoricoController.#ctor(PetTrack.Application.Interfaces.Services.IScoreHistoricoService)">
+            <summary>
+            CRUD de Histórico de Scores de Saúde.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ScoresHistoricoController.Create(PetTrack.Application.DTO.Requests.ScoreHistoricoRequest)">
+            <summary>
+            Cria um novo Score Histórico.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ScoresHistoricoController.GetAll">
+            <summary>
+            Lista todos os Scores Históricos.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ScoresHistoricoController.GetById(System.Int64)">
+            <summary>
+            Retorna um Score Histórico pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ScoresHistoricoController.GetHistoricoByPet(System.Int64)">
+            <summary>
+            Retorna histórico de Scores por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ScoresHistoricoController.GetMediaByPet(System.Int64)">
+            <summary>
+            Retorna a média de Score por pet.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ScoresHistoricoController.Update(System.Int64,PetTrack.Application.DTO.Requests.ScoreHistoricoRequest)">
+            <summary>
+            Atualiza os dados de um Score Histórico existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.ScoresHistoricoController.Delete(System.Int64)">
+            <summary>
+            Remove um Score Histórico pelo identificador.
+            </summary>
+        </member>
+        <member name="T:PetTrack.API.Controllers.TutoresController">
+            <summary>
+            CRUD de Tutores (responsáveis pelos pets).
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.TutoresController.#ctor(PetTrack.Application.Interfaces.Services.ITutorService)">
+            <summary>
+            CRUD de Tutores (responsáveis pelos pets).
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.TutoresController.Create(PetTrack.Application.DTO.Requests.TutorRequest)">
+            <summary>
+            Cria um novo Tutor.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.TutoresController.GetAll">
+            <summary>
+            Lista todos os Tutores.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.TutoresController.GetById(System.Int64)">
+            <summary>
+            Retorna um Tutor pelo identificador.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.TutoresController.GetByNomeOuEmail(System.String)">
+            <summary>
+            Retorna Tutores pelo nome ou email.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.TutoresController.GetByNomePet(System.String)">
+            <summary>
+            Retorna Tutores pelo nome de um pet cadastrado.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.TutoresController.Update(System.Int64,PetTrack.Application.DTO.Requests.TutorRequest)">
+            <summary>
+            Atualiza os dados de um Tutor existente.
+            </summary>
+        </member>
+        <member name="M:PetTrack.API.Controllers.TutoresController.Delete(System.Int64)">
+            <summary>
+            Remove um Tutor pelo identificador.
+            </summary>
+        </member>
         <member name="T:PetTrack.Domain.Program">
             <summary>
             Ponto de entrada da aplicação.
@@ -15,6 +570,18 @@
             Inicializa a aplicação, registra serviços e configura o pipeline HTTP.
             </summary>
             <param name="args">Argumentos de inicialização da aplicação.</param>
+        </member>
+        <member name="T:PetTrack.Swagger.SwaggerExampleSchemaFilter">
+            <summary>
+            Define exemplos de payload para modelos exibidos no Swagger.
+            </summary>
+        </member>
+        <member name="M:PetTrack.Swagger.SwaggerExampleSchemaFilter.Apply(Microsoft.OpenApi.Models.OpenApiSchema,Swashbuckle.AspNetCore.SwaggerGen.SchemaFilterContext)">
+            <summary>
+            Aplica exemplos para os schemas conhecidos da API.
+            </summary>
+            <param name="schema">Schema OpenAPI em construção.</param>
+            <param name="context">Contexto do tipo que está sendo processado.</param>
         </member>
     </members>
 </doc>

@@ -24,7 +24,7 @@ public class ScoreHistorico
     public string? Observacao { get; private set; }
 
     /// <summary>Pet associado ao score. 1:1.</summary>
-    public Pet Pet { get; private set; } = null!;
+    public virtual Pet Pet { get; private set; } = null!;
 
     public ScoreHistorico(double score, string? observacao, Pet pet)
     {

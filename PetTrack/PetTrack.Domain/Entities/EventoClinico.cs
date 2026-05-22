@@ -28,14 +28,14 @@ public class EventoClinico
     public string? Observacao { get; private set; }
 
     /// <summary>Pet associado ao evento. FK para TB_PET. 1:1</summary>
-    public Pet Pet { get; private set; } = null!;
+    public virtual Pet Pet { get; private set; } = null!;
 
     /// <summary>Clínica onde ocorreu o evento. FK para TB_CLINICA. 1:1</summary>
-    public Clinica Clinica { get; private set; } = null!;
+    public virtual Clinica Clinica { get; private set; } = null!;
 
     /// <summary>Lista de medicamentos prescritos. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<Medicamento> Medicamentos { get; private set; }
+    public virtual List<Medicamento> Medicamentos { get; private set; }
 
     public EventoClinico(
         TipoEventoClinicoEnum tipo,

@@ -1,6 +1,6 @@
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using PetTrack.Application.DTO;
+using PetTrack.Application.DTO.Requests;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace PetTrack.Swagger;
@@ -191,7 +191,7 @@ public class SwaggerExampleSchemaFilter : ISchemaFilter
             return;
         }
 
-        if (context.Type == typeof(BcsHistoricoRequest))
+        if (context.Type == typeof(BCSHistoricoRequest))
         {
             SetPropertyDescription(schema, "bcs", "Body Condition Score (1 a 9).");
             SetPropertyDescription(schema, "fotoUrl", "URL da foto utilizada na análise.");

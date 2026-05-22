@@ -31,10 +31,10 @@ public class Notificacao
     public SimNaoEnum Status { get; private set; }
 
     /// <summary>Tutor associado à notificação. FK para TB_TUTOR. 1:1</summary>
-    public Tutor Tutor { get; private set; } = null!;
+    public virtual Tutor Tutor { get; private set; } = null!;
 
     /// <summary>Pet associado à notificação. FK para TB_PET. 1:1</summary>
-    public Pet Pet { get; private set; } = null!;
+    public virtual Pet Pet { get; private set; } = null!;
 
     public Notificacao(
         TipoNotificacaoEnum tipo,

@@ -25,13 +25,33 @@ public class Program
         
         builder.Services.AddControllers();
         
-        builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<IContentService, ContentService>();
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
-        builder.Services.AddScoped<IContentRepository, ContentRepository>();
-        builder.Services.AddScoped<IGenreRepository, GenreRepository>();
-        builder.Services.AddScoped<IRatingRepository, RatingRepository>();
-        builder.Services.AddScoped<IUserConfigurationRepository, UserConfigurationRepository>();
+        // Repositories
+        builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+        builder.Services.AddScoped<IClinicaRepository, ClinicaRepository>();
+        builder.Services.AddScoped<IPetRepository, PetRepository>();
+        builder.Services.AddScoped<IAdesaoMedicamentoRepository, AdesaoMedicamentoRepository>();
+        builder.Services.AddScoped<IAlertaRepository, AlertaRepository>();
+        builder.Services.AddScoped<IBCSHistoricoRepository, BcsHistoricoRepository>();
+        builder.Services.AddScoped<ICollarLeituraRepository, CollarLeituraRepository>();
+        builder.Services.AddScoped<IEventoClinicoRepository, EventoClinicoRepository>();
+        builder.Services.AddScoped<IMedicamentoRepository, MedicamentoRepository>();
+        builder.Services.AddScoped<INotificacaoRepository, NotificacaoRepository>();
+        builder.Services.AddScoped<IProtocoloPreventivoRepository, ProtocoloPreventivoRepository>();
+        builder.Services.AddScoped<IScoreHistoricoRepository, ScoreHistoricoRepository>();
+
+        // Services
+        builder.Services.AddScoped<ITutorService, TutorService>();
+        builder.Services.AddScoped<IClinicaService, ClinicaService>();
+        builder.Services.AddScoped<IPetService, PetService>();
+        builder.Services.AddScoped<IAdesaoMedicamentoService, AdesaoMedicamentoService>();
+        builder.Services.AddScoped<IAlertaService, AlertaService>();
+        builder.Services.AddScoped<IBcsHistoricoService, BcsHistoricoService>();
+        builder.Services.AddScoped<ICollarLeituraService, CollarLeituraService>();
+        builder.Services.AddScoped<IEventoClinicoService, EventoClinicoService>();
+        builder.Services.AddScoped<IMedicamentoService, MedicamentoService>();
+        builder.Services.AddScoped<INotificacaoService, NotificacaoService>();
+        builder.Services.AddScoped<IProtocoloPreventivoService, ProtocoloPreventivoService>();
+        builder.Services.AddScoped<IScoreHistoricoService, ScoreHistoricoService>();
 
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
@@ -40,7 +60,7 @@ public class Program
         builder.Services.AddDbContext<PetTrackContext>(options =>
         {
             var connectionString = builder.Configuration.GetConnectionString("PetTrackContextOracle");
-            options.UseOracle(connectionString);
+            options.UseOracle(connectionString).UseLazyLoadingProxies();
         });
 
         builder.Services.AddEndpointsApiExplorer();

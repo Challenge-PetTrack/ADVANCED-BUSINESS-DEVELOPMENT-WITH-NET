@@ -12,17 +12,18 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.14" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.14" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.14">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
       <PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.60" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\PetTrack.Application\PetTrack.Application.csproj" />
       <ProjectReference Include="..\PetTrack.Domain\PetTrack.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Persistence\Repositories\" />
     </ItemGroup>
 
 </Project>

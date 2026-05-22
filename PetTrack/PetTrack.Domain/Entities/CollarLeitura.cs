@@ -28,7 +28,7 @@ public class CollarLeitura
     public string? TopicoMqtt { get; private set; }
 
     /// <summary>Pet associado à leitura. FK para TB_PET. 1:1</summary>
-    public Pet Pet { get; private set; } = null!;
+    public virtual Pet Pet { get; private set; } = null!;
 
     public CollarLeitura(
         double temperatura,

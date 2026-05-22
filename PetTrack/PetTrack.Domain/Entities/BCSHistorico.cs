@@ -28,7 +28,7 @@ public class BCSHistorico
     public DateTime DataAnalise { get; private set; }
 
     /// <summary>Pet associado ao BCS. FK para TB_PET. 1:1</summary>
-    public Pet Pet { get; private set; } = null!;
+    public virtual Pet Pet { get; private set; } = null!;
 
     public BCSHistorico(
         int? bcs,

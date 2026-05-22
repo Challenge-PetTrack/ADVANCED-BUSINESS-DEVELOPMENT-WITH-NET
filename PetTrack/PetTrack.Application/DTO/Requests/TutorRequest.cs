@@ -12,5 +12,5 @@ namespace PetTrack.Application.DTO.Requests;
 public record TutorRequest(string Nome, string Email, string? Telefone, string? Endereco)
 {
     /// <summary>Converte o DTO para a entidade de domínio Tutor.</summary>
-    public Tutor ToDomain() => new Tutor(Nome, Email, Telefone, Endereco);
+    public Tutor ToEntity() => new Tutor(Nome, Email, Telefone, Endereco);
 }

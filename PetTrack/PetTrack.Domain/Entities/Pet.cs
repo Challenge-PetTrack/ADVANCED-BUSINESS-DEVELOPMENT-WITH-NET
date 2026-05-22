@@ -38,38 +38,38 @@ public class Pet
     public DateTime DataCadastro { get; private set; }
 
     /// <summary>Tutor responsável pelo pet. FK para TB_TUTOR. 1:1</summary>
-    public Tutor Tutor { get; private set; } = null!;
+    public virtual Tutor Tutor { get; private set; } = null!;
 
     /// <summary>Clínica associada ao pet. FK para TB_CLINICA. 1:1</summary>
-    public Clinica Clinica { get; private set; } = null!;
+    public virtual Clinica Clinica { get; private set; } = null!;
 
     /// <summary>Lista de eventos clínicos. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<EventoClinico> Eventos { get; private set; }
+    public virtual List<EventoClinico> Eventos { get; private set; }
 
     /// <summary>Lista de notificações. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<Notificacao> Notificacoes { get; private set; }
+    public virtual List<Notificacao> Notificacoes { get; private set; }
 
     /// <summary>Histórico de scores. Não serializado no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<ScoreHistorico> Scores { get; private set; }
+    public virtual List<ScoreHistorico> Scores { get; private set; }
 
     /// <summary>Histórico de BCS. Não serializado no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<BCSHistorico> BcsHistoricos { get; private set; }
+    public virtual List<BCSHistorico> BcsHistoricos { get; private set; }
 
     /// <summary>Leituras do collar IoT. Não serializadas no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<CollarLeitura> CollarLeituras { get; private set; }
+    public virtual List<CollarLeitura> CollarLeituras { get; private set; }
 
     /// <summary>Alertas do pet. Não serializados no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<Alerta> Alertas { get; private set; }
+    public virtual List<Alerta> Alertas { get; private set; }
 
     /// <summary>Protocolos preventivos. Não serializados no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<ProtocoloPreventivo> Protocolos { get; private set; }
+    public virtual List<ProtocoloPreventivo> Protocolos { get; private set; }
 
     public Pet(
         string nome,

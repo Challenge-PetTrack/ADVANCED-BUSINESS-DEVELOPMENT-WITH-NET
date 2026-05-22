@@ -32,7 +32,7 @@ public class Alerta
     public SimNaoEnum Status { get; private set; }
 
     /// <summary>Pet associado ao alerta. FK para TB_PET. 1:1</summary>
-    public Pet Pet { get; private set; } = null!;
+    public virtual Pet Pet { get; private set; } = null!;
 
     public Alerta(
         TipoAlertaEnum tipo,

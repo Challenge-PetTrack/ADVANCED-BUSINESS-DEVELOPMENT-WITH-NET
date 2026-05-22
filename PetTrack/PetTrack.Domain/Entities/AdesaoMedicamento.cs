@@ -25,7 +25,7 @@ public class AdesaoMedicamento
     public string? Observacao { get; private set; }
 
     /// <summary>Medicamento associado. FK para TB_MEDICAMENTO. 1:1</summary>
-    public Medicamento Medicamento { get; private set; } = null!;
+    public virtual Medicamento Medicamento { get; private set; } = null!;
 
     public AdesaoMedicamento(
         DateTime dataDose,

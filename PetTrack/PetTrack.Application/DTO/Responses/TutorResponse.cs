@@ -20,7 +20,7 @@ public record TutorResponse(
     DateTime DataCadastro)
 {
     /// <summary>Converte a entidade Tutor para o DTO de resposta.</summary>
-    public static TutorResponse FromDomain(Tutor tutor) => new(
+    public static TutorResponse ToDTO(Tutor tutor) => new(
         tutor.Id,
         tutor.Nome,
         tutor.Email,

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "qU0ZW+7/BnU=",
+  "dgSpecHash": "L5njZbxU7xI=",
   "success": true,
   "projectFilePath": "/Users/waidemannn_m/Desktop/challenge-Clyvo/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack/PetTrack.Infrastructure/PetTrack.Infrastructure.csproj",
   "expectedPackageFiles": [
     "/Users/waidemannn_m/.nuget/packages/bcrypt.net-next/4.1.0/bcrypt.net-next.4.1.0.nupkg.sha512",
+    "/Users/waidemannn_m/.nuget/packages/castle.core/5.1.1/castle.core.5.1.1.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/microsoft.build.framework/17.8.43/microsoft.build.framework.17.8.43.nupkg.sha512",
@@ -19,7 +20,9 @@
     "/Users/waidemannn_m/.nuget/packages/microsoft.entityframeworkcore.abstractions/9.0.14/microsoft.entityframeworkcore.abstractions.9.0.14.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/microsoft.entityframeworkcore.analyzers/9.0.14/microsoft.entityframeworkcore.analyzers.9.0.14.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/microsoft.entityframeworkcore.design/9.0.14/microsoft.entityframeworkcore.design.9.0.14.nupkg.sha512",
+    "/Users/waidemannn_m/.nuget/packages/microsoft.entityframeworkcore.proxies/9.0.14/microsoft.entityframeworkcore.proxies.9.0.14.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/microsoft.entityframeworkcore.relational/9.0.14/microsoft.entityframeworkcore.relational.9.0.14.nupkg.sha512",
+    "/Users/waidemannn_m/.nuget/packages/microsoft.entityframeworkcore.tools/9.0.14/microsoft.entityframeworkcore.tools.9.0.14.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/microsoft.extensions.caching.abstractions/9.0.14/microsoft.extensions.caching.abstractions.9.0.14.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/microsoft.extensions.caching.memory/9.0.14/microsoft.extensions.caching.memory.9.0.14.nupkg.sha512",
     "/Users/waidemannn_m/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.14/microsoft.extensions.configuration.abstractions.9.0.14.nupkg.sha512",

@@ -30,11 +30,11 @@ public class Medicamento
     public DateTime? DataFim { get; private set; }
 
     /// <summary>Evento clínico associado. FK para TB_EVENTO_CLINICO. 1:1</summary>
-    public EventoClinico Evento { get; private set; } = null!;
+    public virtual EventoClinico Evento { get; private set; } = null!;
 
     /// <summary>Lista de adesões ao medicamento. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<AdesaoMedicamento> Adesoes { get; private set; }
+    public virtual List<AdesaoMedicamento> Adesoes { get; private set; }
 
     public Medicamento(
         string nome,

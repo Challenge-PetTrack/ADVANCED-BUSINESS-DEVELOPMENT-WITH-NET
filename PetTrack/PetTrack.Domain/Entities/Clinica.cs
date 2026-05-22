@@ -35,11 +35,11 @@ public class Clinica
 
     /// <summary>Lista de pets cadastrados na clínica. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<Pet> Pets { get; private set; }
+    public virtual List<Pet> Pets { get; private set; }
 
     /// <summary>Lista de eventos clínicos. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public List<EventoClinico> Eventos { get; private set; }
+    public virtual List<EventoClinico> Eventos { get; private set; }
 
     public Clinica(
         string nome,

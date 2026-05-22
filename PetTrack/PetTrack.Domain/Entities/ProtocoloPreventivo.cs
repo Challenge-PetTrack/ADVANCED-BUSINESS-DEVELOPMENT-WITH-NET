@@ -30,7 +30,7 @@ public class ProtocoloPreventivo
     public StatusProtocoloPreventivoEnum Status { get; private set; }
 
     /// <summary>Pet associado ao protocolo. FK para TB_PET. 1:1</summary>
-    public Pet Pet { get; private set; } = null!;
+    public virtual Pet Pet { get; private set; } = null!;
 
     public ProtocoloPreventivo(
         TipoProtocoloPreventivoEnum tipo,

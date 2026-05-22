@@ -26,10 +26,10 @@ public class Tutor
     public DateTime DataCadastro { get; private set; }
     /// <summary>Representa fk de tutor na tabela de pet. N:N</summary>
     [JsonIgnore]
-    public List<Pet> Pets { get; private set; }
+    public virtual List<Pet> Pets { get; private set; }
     /// <summary>Representa fk de tutor na tabela de notificação. N:N</summary>
     [JsonIgnore]
-    public List<Notificacao> Notificacoes { get; private set; }
+    public virtual List<Notificacao> Notificacoes { get; private set; }
     
     public Tutor(
         string nome,

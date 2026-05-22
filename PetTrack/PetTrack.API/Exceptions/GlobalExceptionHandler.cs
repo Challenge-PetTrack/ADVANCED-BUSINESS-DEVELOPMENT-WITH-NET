@@ -5,7 +5,7 @@ using Oracle.ManagedDataAccess.Client;
 namespace PetTrack.Exceptions;
 
 public sealed class GlobalExceptionHandler(
-    ILogger logger,
+    ILogger<GlobalExceptionHandler> logger,
     IHostEnvironment environment) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
