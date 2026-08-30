@@ -1,5 +1,11 @@
 using System.Reflection;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Serilog;
 using Microsoft.OpenApi.Models;
 using PetTrack.Application.Interfaces.Repositories;
 using PetTrack.Application.Interfaces.Services;
@@ -21,9 +27,21 @@ public class Program
     /// <param name="args">Argumentos de inicialização da aplicação.</param>
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        
-        builder.Services.AddControllers();
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateBootstrapLogger();
+
+        try
+        {
+            Log.Information("Starting web application");
+            var builder = WebApplication.CreateBuilder(args);
+            
+            builder.Host.UseSerilog((context, services, configuration) => configuration
+                .ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services)
+                .Enrich.FromLogContext());
+
+            builder.Services.AddControllers();
         
         // Repositories
         builder.Services.AddScoped<ITutorRepository, TutorRepository>();
@@ -61,7 +79,29 @@ public class Program
         {
             var connectionString = builder.Configuration.GetConnectionString("PetTrackContextOracle");
             options.UseOracle(connectionString).UseLazyLoadingProxies();
-        });
+        });        builder.Services.AddHealthChecks()
+            .AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy())
+            .AddOracle(
+                builder.Configuration.GetConnectionString("PetTrackContextOracle") ?? string.Empty,
+                name: "oracle-db",
+                tags: new[] { "db", "oracle" })
+            .AddUrlGroup(
+                new Uri("https://httpbin.org/status/200"),
+                name: "external-service-test",
+                tags: new[] { "external", "http" });
+
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService("PetTrack.API"))
+            .WithTracing(tracing => tracing
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddEntityFrameworkCoreInstrumentation()
+                .AddConsoleExporter())
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddRuntimeInstrumentation()
+                .AddConsoleExporter());
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
@@ -107,10 +147,25 @@ public class Program
             });
         }
 
+        app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        
+        app.MapHealthChecks("/health", new HealthCheckOptions
+        {
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
 
         app.Run();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Application terminated unexpectedly");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 }
