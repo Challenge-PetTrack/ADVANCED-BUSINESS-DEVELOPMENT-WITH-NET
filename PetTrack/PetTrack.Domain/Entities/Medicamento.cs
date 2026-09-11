@@ -34,7 +34,7 @@ public class Medicamento
 
     /// <summary>Lista de adesões ao medicamento. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<AdesaoMedicamento> Adesoes { get; private set; }
+    public virtual List<AdesaoMedicamento> Adesoes { get; private set; } = [];
 
     public Medicamento(
         string nome,

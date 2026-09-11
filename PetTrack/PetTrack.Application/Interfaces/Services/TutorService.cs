@@ -1,6 +1,7 @@
 using PetTrack.Application.DTO.Requests;
 using PetTrack.Application.DTO.Responses;
 using PetTrack.Application.Interfaces.Repositories;
+using PetTrack.Application.Metrics;
 
 namespace PetTrack.Application.Interfaces.Services;
 
@@ -28,6 +29,7 @@ public class TutorService : ITutorService
     {
         var tutor = request.ToEntity();
         _tutorRepository.Add(tutor);
+        PetTrackMetrics.TutoresCreatedCounter.Add(1);
         return TutorResponse.ToDTO(tutor);
     }
 

@@ -45,32 +45,33 @@ public class Pet
 
     /// <summary>Lista de eventos clínicos. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<EventoClinico> Eventos { get; private set; }
+    public virtual List<EventoClinico> Eventos { get; private set; } = [];
 
     /// <summary>Lista de notificações. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<Notificacao> Notificacoes { get; private set; }
+    public virtual List<Notificacao> Notificacoes { get; private set; } = [];
 
     /// <summary>Histórico de scores. Não serializado no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<ScoreHistorico> Scores { get; private set; }
+    public virtual List<ScoreHistorico> Scores { get; private set; } = [];
 
     /// <summary>Histórico de BCS. Não serializado no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<BCSHistorico> BcsHistoricos { get; private set; }
+    public virtual List<BCSHistorico> BcsHistoricos { get; private set; } = [];
 
     /// <summary>Leituras do collar IoT. Não serializadas no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<CollarLeitura> CollarLeituras { get; private set; }
+    public virtual List<CollarLeitura> CollarLeituras { get; private set; } = [];
 
     /// <summary>Alertas do pet. Não serializados no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<Alerta> Alertas { get; private set; }
+    public virtual List<Alerta> Alertas { get; private set; } = [];
 
     /// <summary>Protocolos preventivos. Não serializados no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<ProtocoloPreventivo> Protocolos { get; private set; }
+    public virtual List<ProtocoloPreventivo> Protocolos { get; private set; } = [];
 
+    [JsonConstructor]
     public Pet(
         string nome,
         string especie,

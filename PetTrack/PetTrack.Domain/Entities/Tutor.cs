@@ -14,9 +14,9 @@ public class Tutor
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public long Id { get; private set; }
     /// <summary>Nome do tutor.</summary>
-    public string Nome { get; private set; }
+    public string Nome { get; private set; } = string.Empty;
     /// <summary>Email do tutor.</summary>
-    public string Email { get; private set; }
+    public string Email { get; private set; } = string.Empty;
     /// <summary>Telefone do tutor.</summary>
     public string? Telefone { get; private set; }
     /// <summary>Endereço do tutor.</summary>
@@ -26,11 +26,12 @@ public class Tutor
     public DateTime DataCadastro { get; private set; }
     /// <summary>Representa fk de tutor na tabela de pet. N:N</summary>
     [JsonIgnore]
-    public virtual List<Pet> Pets { get; private set; }
+    public virtual List<Pet> Pets { get; private set; } = [];
     /// <summary>Representa fk de tutor na tabela de notificação. N:N</summary>
     [JsonIgnore]
-    public virtual List<Notificacao> Notificacoes { get; private set; }
+    public virtual List<Notificacao> Notificacoes { get; private set; } = [];
     
+    [JsonConstructor]
     public Tutor(
         string nome,
         string email,
@@ -88,6 +89,8 @@ public class Tutor
 
     public Tutor()
     {
+        Nome = string.Empty;
+        Email = string.Empty;
         Pets = [];
         Notificacoes = [];
     }

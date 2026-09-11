@@ -1,6 +1,7 @@
 using PetTrack.Application.DTO.Requests;
 using PetTrack.Application.DTO.Responses;
 using PetTrack.Application.Interfaces.Repositories;
+using PetTrack.Application.Metrics;
 using PetTrack.Domain.Enum;
 
 namespace PetTrack.Application.Interfaces.Services;
@@ -29,6 +30,7 @@ public class AlertaService : IAlertaService
     {
         var alerta = request.ToEntity();
         _alertaRepository.Add(alerta);
+        PetTrackMetrics.AlertasCreatedCounter.Add(1);
         return AlertaResponse.ToDTO(alerta);
     }
 

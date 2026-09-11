@@ -1,17 +1,25 @@
 using System.Reflection;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 using PetTrack.Application.Interfaces.Repositories;
 using PetTrack.Application.Interfaces.Services;
+using PetTrack.Application.Metrics;
 using PetTrack.Exceptions;
+using PetTrack.Health;
 using PetTrack.Infrastructure.Persistence;
 using PetTrack.Infrastructure.Persistence.Repositories;
+using Serilog;
 
-namespace PetTrack.Domain;
+namespace PetTrack;
 
 /// <summary>
 /// Ponto de entrada da aplicação.
-/// Configura e executa o pipeline da API ASP.NET Core.
+/// Configura e executa o pipeline da API ASP.NET Core com Observabilidade (Serilog, HealthChecks, OpenTelemetry/Prometheus).
 /// </summary>
 public class Program
 {
@@ -22,10 +30,21 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
+        // 1. Configuração de Structured Logging com Serilog
+        builder.Host.UseSerilog((context, services, configuration) =>
+        {
+            configuration
+                .ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services)
+                .Enrich.FromLogContext();
+        });
+
         builder.Services.AddControllers();
+
         
-        // Repositories
+        
+        // 2. Repositories
         builder.Services.AddScoped<ITutorRepository, TutorRepository>();
         builder.Services.AddScoped<IClinicaRepository, ClinicaRepository>();
         builder.Services.AddScoped<IPetRepository, PetRepository>();
@@ -39,7 +58,7 @@ public class Program
         builder.Services.AddScoped<IProtocoloPreventivoRepository, ProtocoloPreventivoRepository>();
         builder.Services.AddScoped<IScoreHistoricoRepository, ScoreHistoricoRepository>();
 
-        // Services
+        // 3. Services
         builder.Services.AddScoped<ITutorService, TutorService>();
         builder.Services.AddScoped<IClinicaService, ClinicaService>();
         builder.Services.AddScoped<IPetService, PetService>();
@@ -55,13 +74,37 @@ public class Program
 
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
-         
-        
-        builder.Services.AddDbContext<PetTrackContext>(options =>
+
+        // 4. Persistence / Database Context
+        if (!builder.Environment.IsEnvironment("Testing"))
         {
-            var connectionString = builder.Configuration.GetConnectionString("PetTrackContextOracle");
-            options.UseOracle(connectionString).UseLazyLoadingProxies();
-        });
+            builder.Services.AddDbContext<PetTrackContext>(options =>
+            {
+                var connectionString = builder.Configuration.GetConnectionString("PetTrackContextOracle");
+                if (!string.IsNullOrEmpty(connectionString))
+                {
+                    options.UseOracle(connectionString).UseLazyLoadingProxies();
+                }
+            });
+        }
+
+        // 5. Health Checks
+        builder.Services.AddHealthChecks()
+            .AddCheck("self", () => HealthCheckResult.Healthy("API PetTrack online e responsiva"), tags: ["live"])
+            .AddDbContextCheck<PetTrackContext>("oracle_db", tags: ["ready", "db"])
+            .AddCheck<ExternalIntegrationHealthCheck>("clyvo_iot_service", tags: ["ready", "integration"]);
+
+        // 6. OpenTelemetry: Distributed Tracing & Metrics com Prometheus
+        builder.Services.AddOpenTelemetry()
+            .WithTracing(tracing => tracing
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddEntityFrameworkCoreInstrumentation())
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddMeter(PetTrackMetrics.MeterName)
+                .AddPrometheusExporter());
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
@@ -78,7 +121,7 @@ public class Program
                 Contact = new OpenApiContact
                 {
                     Name = "Equipe PetTrack — 2TDSPF",
-                    Email = "mjrmolinillo@icliud.com",
+                    Email = "mjrmolinillo@icloud.com",
                     Url = new Uri("https://github.com/Challenge-PetTrack/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET.git")
                 },
                 License = new OpenApiLicense
@@ -90,13 +133,17 @@ public class Program
 
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+            if (File.Exists(xmlPath))
+            {
+                options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+            }
         });
 
         var app = builder.Build();
 
         app.UseExceptionHandler();
-        
+        app.UseSerilogRequestLogging();
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -110,6 +157,27 @@ public class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+
+        // OpenTelemetry Prometheus Metrics Endpoint (/metrics)
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
+
+        // Health Checks Endpoints (/health, /health/live, /health/ready)
+        app.MapHealthChecks("/health", new HealthCheckOptions
+        {
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
+
+        app.MapHealthChecks("/health/live", new HealthCheckOptions
+        {
+            Predicate = check => check.Tags.Contains("live"),
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
+
+        app.MapHealthChecks("/health/ready", new HealthCheckOptions
+        {
+            Predicate = check => check.Tags.Contains("ready"),
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
 
         app.Run();
     }

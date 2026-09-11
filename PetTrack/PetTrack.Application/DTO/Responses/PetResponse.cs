@@ -38,6 +38,6 @@ public record PetResponse(
         pet.Idade,
         pet.Peso,
         pet.DataCadastro,
-        TutorResponse.ToDTO(pet.Tutor),
-        ClinicaResponse.ToDTO(pet.Clinica));
+        pet.Tutor != null ? TutorResponse.ToDTO(pet.Tutor) : null!,
+        pet.Clinica != null ? ClinicaResponse.ToDTO(pet.Clinica) : null!);
 }

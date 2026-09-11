@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <UseSharedCompilation>false</UseSharedCompilation>
+    <GenerateMSBuildEditorConfigFile>false</GenerateMSBuildEditorConfigFile>
+    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    <RazorLangVersion>9.0</RazorLangVersion>
+  </PropertyGroup>
+</Project>

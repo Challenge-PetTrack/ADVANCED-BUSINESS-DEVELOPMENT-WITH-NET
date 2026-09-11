@@ -4,10 +4,16 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace PetTrack.Exceptions;
 
+/// <summary>
+/// Manipulador global de exceções para mapear erros e exceções não tratadas para respostas ProblemDetails RFC 7807.
+/// </summary>
 public sealed class GlobalExceptionHandler(
     ILogger<GlobalExceptionHandler> logger,
     IHostEnvironment environment) : IExceptionHandler
 {
+    /// <summary>
+    /// Trata a exceção assincronamente e escreve a resposta formatada em ProblemDetails.
+    /// </summary>
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         logger.LogError(exception, "Excecao nao tratada: {Message}", exception.Message);

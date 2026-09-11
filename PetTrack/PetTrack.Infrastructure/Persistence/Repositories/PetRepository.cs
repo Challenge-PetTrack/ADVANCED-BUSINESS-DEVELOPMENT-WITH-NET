@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PetTrack.Application.Interfaces.Repositories;
 using PetTrack.Domain.Entities;
 using PetTrack.Domain.Enum;
@@ -14,28 +15,42 @@ public class PetRepository : IPetRepository
     }
 
     public IReadOnlyList<Pet> GetAll() =>
-        _context.Pets.ToList();
+        _context.Pets
+            .Include(p => p.Tutor)
+            .Include(p => p.Clinica)
+            .ToList();
 
     public Pet? GetById(long id) =>
-        _context.Pets.FirstOrDefault(p => p.Id == id);
+        _context.Pets
+            .Include(p => p.Tutor)
+            .Include(p => p.Clinica)
+            .FirstOrDefault(p => p.Id == id);
 
     public IReadOnlyList<Pet> GetByClinicaId(long idClinica) =>
         _context.Pets
+            .Include(p => p.Tutor)
+            .Include(p => p.Clinica)
             .Where(p => p.Clinica.Id == idClinica)
             .ToList();
 
     public IReadOnlyList<Pet> GetBySexo(SexoPetEnum sexo) =>
         _context.Pets
+            .Include(p => p.Tutor)
+            .Include(p => p.Clinica)
             .Where(p => p.Sexo == sexo)
             .ToList();
 
     public IReadOnlyList<Pet> GetByNomeOuEspecie(string busca) =>
         _context.Pets
+            .Include(p => p.Tutor)
+            .Include(p => p.Clinica)
             .Where(p => p.Nome.Contains(busca) || p.Especie.Contains(busca))
             .ToList();
 
     public IReadOnlyList<Pet> GetPetsComAlertasPendentes() =>
         _context.Pets
+            .Include(p => p.Tutor)
+            .Include(p => p.Clinica)
             .Where(p => p.Alertas.Any(a => a.Status == SimNaoEnum.N))
             .ToList();
 

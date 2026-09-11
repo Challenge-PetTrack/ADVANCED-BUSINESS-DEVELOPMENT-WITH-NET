@@ -1,6 +1,7 @@
 using PetTrack.Application.DTO.Requests;
 using PetTrack.Application.DTO.Responses;
 using PetTrack.Application.Interfaces.Repositories;
+using PetTrack.Application.Metrics;
 using PetTrack.Domain.Enum;
 
 namespace PetTrack.Application.Interfaces.Services;
@@ -31,6 +32,7 @@ public class PetService : IPetService
     {
         var pet = request.ToEntity();
         _petRepository.Add(pet);
+        PetTrackMetrics.PetsCreatedCounter.Add(1);
         return PetResponse.ToDTO(pet);
     }
 

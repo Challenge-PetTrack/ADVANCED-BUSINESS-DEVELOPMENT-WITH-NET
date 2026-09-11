@@ -35,7 +35,7 @@ public class EventoClinico
 
     /// <summary>Lista de medicamentos prescritos. Não serializada no JSON para evitar loop infinito. N:N</summary>
     [JsonIgnore]
-    public virtual List<Medicamento> Medicamentos { get; private set; }
+    public virtual List<Medicamento> Medicamentos { get; private set; } = [];
 
     public EventoClinico(
         TipoEventoClinicoEnum tipo,

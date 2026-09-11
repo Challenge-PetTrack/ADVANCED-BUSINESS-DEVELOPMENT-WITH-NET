@@ -1,303 +1,291 @@
-# 🐾 PetTrack API — ASP.NET Core
+# 🐾 PetTrack API — ASP.NET Core & Clyvo Vet (Sprint 3)
 
-> Sistema operacional da saúde contínua do pet — API REST em ASP.NET Core 8 conectada ao Oracle DB, desenvolvida para o **Challenge FIAP 2026** em parceria com a **Clyvo Vet**.
-
----
-
-## 👥 Equipe
-
-| Nome | RM |
-|---|---|
-| Gabriel Sbrana Campos | RM 565849 |
-| Moisés Waidemann | RM 563719 |
-| Thiago Rodrigues da Mota | RM 563765 |
-| Richard Freitas | RM 566127 |
-
-**Turma:** 2TDS — Fevereiro
-**Disciplina:** Advanced Business Development with .NET
-**Instituição:** FIAP
+> **Sistema Operacional da Saúde Contínua do Pet** — API REST desenvolvida em **ASP.NET Core (.NET 10)** com **Clean Architecture**, conectada ao **Oracle Database**, equipada com **Observabilidade completa (Serilog, Health Checks, OpenTelemetry / Prometheus)** e **Testes Automatizados com padrão AAA (xUnit, Moq, FluentAssertions, WebApplicationFactory)** para o **Challenge FIAP 2026** em parceria com a **Clyvo Vet**.
 
 ---
 
-## 📌 Descrição do Projeto
+## 👥 Integrantes da Equipe
 
-O **PetTrack** é uma plataforma de saúde contínua para pets que conecta tutores, animais e clínicas veterinárias em um único ecossistema digital. A proposta nasce do challenge da **Clyvo Vet**, que busca digitalizar e centralizar a jornada de saúde do animal desde o cadastro até o monitoramento em tempo real via collar IoT.
+| Nome Completo | RM | Turma |
+|---|---|---|
+| **Gabriel Sbrana Campos** | RM 565849 | 2TDSPF |
+| **Moisés Waidemann** | RM 563719 | 2TDSPF |
+| **Thiago Rodrigues da Mota** | RM 563765 | 2TDSPF |
+| **Richard Freitas** | RM 566127 | 2TDSPF |
 
-Esta API em ASP.NET Core compartilha o mesmo banco Oracle já utilizado pela API Java Spring Boot do projeto, garantindo consistência de dados entre ambas as implementações.
+- **Instituição:** FIAP — Faculdade de Informática e Administração Paulista
+- **Curso:** Análise e Desenvolvimento de Sistemas (2º Ano ADS - Turma 2TDSPF)
+- **Disciplina:** Advanced Business Development with .NET
+- **Parceiro de Negócio:** Clyvo Vet
 
 ---
 
-## 🏗️ Arquitetura — Clean Architecture
+## 📋 Sumário
+1. [Visão Geral do Projeto](#-visão-geral-do-projeto)
+2. [Arquitetura da Solução](#-arquitetura-da-solução)
+3. [Observabilidade e Monitoramento](#-observabilidade-e-monitoramento)
+   - [Health Checks (`/health`, `/health/live`, `/health/ready`)](#1-health-checks)
+   - [Structured Logging com Serilog](#2-structured-logging-com-serilog)
+   - [Distributed Tracing & Métricas Prometheus via OpenTelemetry](#3-distributed-tracing--métricas-prometheus-via-opentelemetry)
+4. [Testes Automatizados com Padrão AAA](#-testes-automatizados-com-padrão-aaa)
+   - [PetTrack.UnitTests (xUnit + Moq + FluentAssertions)](#1-testes-unitários-pettrackunittests)
+   - [PetTrack.IntegrationTests (WebApplicationFactory + InMemory)](#2-testes-de-integração-pettrackintegrationtests)
+   - [Como Executar a Suíte de Testes](#3-como-executar-os-testes)
+5. [Endpoints da API REST & Swagger UI](#-endpoints-da-api-rest--swagger-ui)
+6. [Instruções de Instalação e Execução](#-instruções-de-instalação-e-execução)
+7. [Tecnologias e Pacotes Utilizados](#-tecnologias-e-pacotes-utilizados)
+
+---
+
+## 📌 Visão Geral do Projeto
+
+O **PetTrack** é um ecossistema digital para acompanhamento contínuo da saúde preventiva de cães e gatos. Ele integra:
+- Cadastro e gestão de tutores, animais e clínicas veterinárias;
+- Histórico clínico, prescrição e controle de adesão a medicamentos;
+- Monitoramento telemétrico e corporal contínuo via coleiras inteligentes (**Colares IoT Clyvo**);
+- Detecção preventiva de anomalias (febre, sedentarismo, obesidade, falhas de adesão terapêutica) gerando **Alertas** e **Notificações** em tempo real;
+- Compatibilidade e consistência transacional com o banco de dados Oracle relacional compartilhado com as demais disciplinas (Mastering Relational and Non-Relational Database e Java Advanced).
+
+---
+
+## 🏗️ Arquitetura da Solução
+
+O projeto adota os princípios da **Clean Architecture** (Arquitetura Limpa) e **Domain-Driven Design (DDD)**:
 
 ```
 PetTrack/
-├── PetTrack.API/                  → Controllers, Program.cs, Swagger, Exceptions
-├── PetTrack.Application/          → DTOs, Interfaces de Services e Repositories, Services
-├── PetTrack.Domain/               → Entidades, Enums (regras de negócio puras)
-└── PetTrack.Infrastructure/       → DbContext, Configurations EF Core, Repositories
+├── PetTrack.API/                  → Entrypoint HTTP, Controllers, Middleware de Exceção, Swagger, Serilog, OpenTelemetry, Health Checks
+├── PetTrack.Application/          → Casos de uso, DTOs (Requests/Responses), Interfaces de Services/Repositories, Métricas customizadas
+├── PetTrack.Domain/               → Entidades de Domínio, Invariantes e Regras de Negócio Puras, Enums
+├── PetTrack.Infrastructure/       → DbContext EF Core, Mapeamentos Fluent API, Repositórios de Persistência Oracle
+├── PetTrack.UnitTests/            → Testes Unitários de Domínio e Serviços (xUnit + Moq + FluentAssertions + Fixtures)
+└── PetTrack.IntegrationTests/     → Testes de Integração de API End-to-End (WebApplicationFactory + InMemory DB)
 ```
 
-**Fluxo de dados:**
+### Regras de Dependência:
 ```
-Request → Controller → Service → Repository → Oracle DB
-Response ← Controller ← Service (DTO) ← Entity ← Oracle DB
-```
-
-**Regra de dependência:**
-```
-API → Application → Domain
-Infrastructure → Application + Domain
+[PetTrack.API] ───► [PetTrack.Application] ───► [PetTrack.Domain]
+      │                       ▲
+      ▼                       │
+[PetTrack.Infrastructure] ────┘
 ```
 
 ---
 
-## 🗄️ Banco de Dados
+## 🔭 Observabilidade e Monitoramento
 
-Banco Oracle compartilhado com a API Java. As tabelas já existem — não são recriadas pelo .NET.
+### 1. Health Checks
+A aplicação expõe 3 endpoints especializados de integridade com resposta formatada em JSON detalhado (`UIResponseWriter.WriteHealthCheckUIResponse`):
 
-| Tabela | Descrição |
-|---|---|
-| `TB_TUTOR` | Responsável pelo pet |
-| `TB_PET` | Animal cadastrado |
-| `TB_CLINICA` | Clínica veterinária |
-| `TB_EVENTO_CLINICO` | Consultas e eventos clínicos |
-| `TB_PROTOCOLO_PREVENTIVO` | Protocolos de vacinação/vermifugação |
-| `TB_MEDICAMENTO` | Medicamentos prescritos |
-| `TB_ADESAO_MEDICAMENTO` | Adesão do tutor ao medicamento |
-| `TB_NOTIFICACAO` | Notificações enviadas ao tutor |
-| `TB_SCORE_HISTORICO` | Histórico de score de saúde |
-| `TB_BCS_HISTORICO` | Body Condition Score histórico |
-| `TB_COLLAR_LEITURA` | Leituras do collar IoT |
-| `TB_ALERTA` | Alertas gerados pelo sistema |
+- **`/health`**: Visão completa e consolidada do status de saúde de todos os subsistemas da API.
+- **`/health/live`**: *Liveness Probe* do Kubernetes/Cloud para verificar se o processo da API está ativo e respondendo (`self`).
+- **`/health/ready`**: *Readiness Probe* para validar se a aplicação está pronta para receber tráfego, testando o banco de dados Oracle (`oracle_db`) e o gateway de telemetria dos colares IoT (`clyvo_iot_service`).
 
-> Todas as PKs utilizam **SEQUENCE** do Oracle (não IDENTITY).
-
----
-
-## 🔗 Rotas da API
-
-### Tutores — `/api/tutores`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/tutores` | Lista todos os tutores | 200 |
-| GET | `/api/tutores/{id}` | Busca tutor por ID | 200 / 404 |
-| GET | `/api/tutores/buscar?busca=` | Busca por nome ou email | 200 |
-| GET | `/api/tutores/nomePet?nomePet=` | Busca por nome do pet | 200 |
-| POST | `/api/tutores` | Cria um novo tutor | 201 / 400 |
-| PUT | `/api/tutores/{id}` | Atualiza dados do tutor | 200 / 404 |
-| DELETE | `/api/tutores/{id}` | Remove um tutor | 204 / 404 |
-
-### Clínicas — `/api/clinicas`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/clinicas` | Lista todas as clínicas | 200 |
-| GET | `/api/clinicas/{id}` | Busca clínica por ID | 200 / 404 |
-| GET | `/api/clinicas/buscar?busca=` | Busca por nome ou CNPJ | 200 |
-| GET | `/api/clinicas/nomePet?nomePet=` | Busca por nome do pet | 200 |
-| POST | `/api/clinicas` | Cadastra clínica | 201 / 400 |
-| PUT | `/api/clinicas/{id}` | Atualiza clínica | 200 / 404 |
-| DELETE | `/api/clinicas/{id}` | Remove clínica | 204 / 404 |
-
-### Pets — `/api/pets`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/pets` | Lista todos os pets | 200 |
-| GET | `/api/pets/{id}` | Busca pet por ID | 200 / 404 |
-| GET | `/api/pets/clinica/{idClinica}` | Pets por clínica | 200 |
-| GET | `/api/pets/sexo?sexo=` | Pets por sexo | 200 |
-| GET | `/api/pets/buscar?busca=` | Busca por nome ou espécie | 200 |
-| GET | `/api/pets/alertasPendentes` | Pets com alertas pendentes | 200 |
-| POST | `/api/pets` | Cadastra um novo pet | 201 / 400 |
-| PUT | `/api/pets/{id}` | Atualiza dados do pet | 200 / 404 |
-| DELETE | `/api/pets/{id}` | Remove um pet | 204 / 404 |
-
-### Eventos Clínicos — `/api/eventosclinicos`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/eventosclinicos` | Lista todos os eventos | 200 |
-| GET | `/api/eventosclinicos/{id}` | Busca evento por ID | 200 / 404 |
-| GET | `/api/eventosclinicos/tipo?tipo=` | Eventos por tipo | 200 |
-| GET | `/api/eventosclinicos/medicamentos/{idPet}` | Eventos com medicamentos por pet | 200 |
-| POST | `/api/eventosclinicos` | Registra evento clínico | 201 / 400 |
-| PUT | `/api/eventosclinicos/{id}` | Atualiza evento | 200 / 404 |
-| DELETE | `/api/eventosclinicos/{id}` | Remove evento | 204 / 404 |
-
-### Medicamentos — `/api/medicamentos`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/medicamentos` | Lista todos os medicamentos | 200 |
-| GET | `/api/medicamentos/{id}` | Busca medicamento por ID | 200 / 404 |
-| GET | `/api/medicamentos/buscar?nome=` | Busca por nome | 200 |
-| GET | `/api/medicamentos/ativos/{idPet}` | Medicamentos ativos por pet | 200 |
-| POST | `/api/medicamentos` | Registra medicamento | 201 / 400 |
-| PUT | `/api/medicamentos/{id}` | Atualiza medicamento | 200 / 404 |
-| DELETE | `/api/medicamentos/{id}` | Remove medicamento | 204 / 404 |
-
-### Adesões ao Medicamento — `/api/adesoemedicamento`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/adesoemedicamento` | Lista todas as adesões | 200 |
-| GET | `/api/adesoemedicamento/{id}` | Busca adesão por ID | 200 / 404 |
-| GET | `/api/adesoemedicamento/medicamento/{idMedicamento}` | Adesões por medicamento | 200 |
-| GET | `/api/adesoemedicamento/status?status=` | Adesões por status | 200 |
-| POST | `/api/adesoemedicamento` | Registra adesão | 201 / 400 |
-| PUT | `/api/adesoemedicamento/{id}` | Atualiza adesão | 200 / 404 |
-| DELETE | `/api/adesoemedicamento/{id}` | Remove adesão | 204 / 404 |
-
-### Notificações — `/api/notificacoes`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/notificacoes` | Lista todas as notificações | 200 |
-| GET | `/api/notificacoes/{id}` | Busca notificação por ID | 200 / 404 |
-| GET | `/api/notificacoes/status?status=` | Notificações por status | 200 |
-| GET | `/api/notificacoes/tipo?tipo=` | Notificações por tipo | 200 |
-| GET | `/api/notificacoes/urgentes/{idTutor}` | Urgentes não lidas por tutor | 200 |
-| POST | `/api/notificacoes` | Cria notificação | 201 / 400 |
-| PUT | `/api/notificacoes/{id}` | Atualiza notificação | 200 / 404 |
-| DELETE | `/api/notificacoes/{id}` | Remove notificação | 204 / 404 |
-
-### Alertas — `/api/alertas`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/alertas` | Lista todos os alertas | 200 |
-| GET | `/api/alertas/{id}` | Busca alerta por ID | 200 / 404 |
-| GET | `/api/alertas/tipo?tipo=` | Alertas por tipo | 200 |
-| GET | `/api/alertas/pendentes/{idPet}` | Alertas pendentes por pet | 200 |
-| POST | `/api/alertas` | Cria alerta | 201 / 400 |
-| PUT | `/api/alertas/{id}` | Atualiza alerta | 200 / 404 |
-| DELETE | `/api/alertas/{id}` | Remove alerta | 204 / 404 |
-
-### BCS Histórico — `/api/bcshistoricos`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/bcshistoricos` | Lista todos os BCS | 200 |
-| GET | `/api/bcshistoricos/{id}` | Busca BCS por ID | 200 / 404 |
-| GET | `/api/bcshistoricos/historico/{idPet}` | Histórico de BCS por pet | 200 |
-| GET | `/api/bcshistoricos/media/{idPet}` | Média de BCS por pet | 200 |
-| POST | `/api/bcshistoricos` | Registra BCS | 201 / 400 |
-| PUT | `/api/bcshistoricos/{id}` | Atualiza BCS | 200 / 404 |
-| DELETE | `/api/bcshistoricos/{id}` | Remove BCS | 204 / 404 |
-
-### Collar Leituras — `/api/collarleituras`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/collarleituras` | Lista todas as leituras | 200 |
-| GET | `/api/collarleituras/{id}` | Busca leitura por ID | 200 / 404 |
-| GET | `/api/collarleituras/temperatura?idPet=&temperatura=` | Leituras por temperatura | 200 |
-| GET | `/api/collarleituras/ultima/{idPet}` | Última leitura por pet | 200 / 404 |
-| POST | `/api/collarleituras` | Registra leitura | 201 / 400 |
-| PUT | `/api/collarleituras/{id}` | Atualiza leitura | 200 / 404 |
-| DELETE | `/api/collarleituras/{id}` | Remove leitura | 204 / 404 |
-
-### Score Histórico — `/api/scoreshistorico`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/scoreshistorico` | Lista todos os scores | 200 |
-| GET | `/api/scoreshistorico/{id}` | Busca score por ID | 200 / 404 |
-| GET | `/api/scoreshistorico/historico/{idPet}` | Histórico de scores por pet | 200 |
-| GET | `/api/scoreshistorico/media/{idPet}` | Média de score por pet | 200 |
-| POST | `/api/scoreshistorico` | Registra score | 201 / 400 |
-| PUT | `/api/scoreshistorico/{id}` | Atualiza score | 200 / 404 |
-| DELETE | `/api/scoreshistorico/{id}` | Remove score | 204 / 404 |
-
-### Protocolos Preventivos — `/api/protocolospreventivos`
-| Método | Rota | Descrição | Status |
-|---|---|---|---|
-| GET | `/api/protocolospreventivos` | Lista todos os protocolos | 200 |
-| GET | `/api/protocolospreventivos/{id}` | Busca protocolo por ID | 200 / 404 |
-| GET | `/api/protocolospreventivos/tipo?tipo=` | Protocolos por tipo | 200 |
-| GET | `/api/protocolospreventivos/pendentes/{idPet}` | Pendentes ou atrasados por pet | 200 |
-| POST | `/api/protocolospreventivos` | Cria protocolo | 201 / 400 |
-| PUT | `/api/protocolospreventivos/{id}` | Atualiza protocolo | 200 / 404 |
-| DELETE | `/api/protocolospreventivos/{id}` | Remove protocolo | 204 / 404 |
-
----
-
-## 🚀 Como Rodar
-
-### Pré-requisitos
-- [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- Acesso à rede da FIAP (VPN ou presencial para o Oracle)
-- Git
-
-### 1. Clonar o repositório
-```bash
-git clone https://github.com/Challenge-PetTrack/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET.git
-cd ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET
-```
-
-### 2. Configurar a connection string
-Edite `PetTrack.API/appsettings.json`:
+#### Exemplo de Resposta de `/health`:
 ```json
 {
-  "ConnectionStrings": {
-    "PetTrackContextOracle": "Data Source=oracle.fiap.com.br:1521/orcl;User ID=rm563719;Password=111206;"
+  "status": "Healthy",
+  "totalDuration": "00:00:00.0123456",
+  "entries": {
+    "self": {
+      "data": {},
+      "description": "API PetTrack online e responsiva",
+      "duration": "00:00:00.0001234",
+      "status": "Healthy",
+      "tags": ["live"]
+    },
+    "oracle_db": {
+      "data": {},
+      "duration": "00:00:00.0054321",
+      "status": "Healthy",
+      "tags": ["ready", "db"]
+    },
+    "clyvo_iot_service": {
+      "data": {
+        "clyvo_iot_gateway": "Connected",
+        "response_time_ms": 12,
+        "firmware_supported_version": "v2.4.0"
+      },
+      "description": "Serviço de telemetria IoT Clyvo operando normalmente.",
+      "duration": "00:00:00.0003210",
+      "status": "Healthy",
+      "tags": ["ready", "integration"]
+    }
   }
 }
 ```
 
-### 3. Restaurar dependências
+---
+
+### 2. Structured Logging com Serilog
+A API foi instrumentada com **Serilog**, capturando eventos e logs estruturados em dois destinos simultâneos:
+1. **Console**: Colorido com enriquecimento de contexto (`FromLogContext`, timestamp, trace ID);
+2. **Arquivo Rotativo Diário**: Gravado em `logs/pettrack-.log` com retenção automática de 7 dias (`rollingInterval: Day`).
+
+#### Exemplo de Formato Estruturado:
+```
+2026-09-08 20:05:45.123 -03:00 [INF] [d8a7c8164b321a] [PetTrack.API.Controllers.PetsController] HTTP POST /api/pets responded 201 in 14.523 ms
+```
+
+---
+
+### 3. Distributed Tracing & Métricas Prometheus via OpenTelemetry
+A aplicação utiliza a biblioteca padrão **OpenTelemetry** com exportação nativa no endpoint:
+- **`/metrics`**: Endpoint no formato padrão do Prometheus contendo métricas de runtime, ASP.NET Core, HttpClient e métricas de negócio exclusivas da PetTrack:
+  - `pettrack_pets_created_total`: Contador acumulado de pets cadastrados;
+  - `pettrack_tutores_created_total`: Contador acumulado de tutores cadastrados;
+  - `pettrack_alertas_created_total`: Contador acumulado de alertas clínicos/preventivos emitidos;
+  - `pettrack_collar_readings_total`: Contador de telemetrias processadas do colar inteligente;
+  - `pettrack_adesao_medicamento_total`: Contador de doses administradas/registradas.
+
+---
+
+## 🧪 Testes Automatizados com Padrão AAA
+
+A suíte possui **86 testes automatizados (100% de aprovação)** organizados rigorosamente sob a convenção:
+`MetodoTestado_Cenario_ResultadoEsperado` e divididos em **Arrange, Act e Assert**.
+
+```
+Aprovado! – Total: 86 testes (71 Unitários + 15 de Integração) – Falhas: 0
+```
+
+### 1. Testes Unitários (`PetTrack.UnitTests`)
+- **Domínio (`Domain/`)**: Validação de invariantes, regras de negócio e lançamentos de exceções nas entidades `Pet`, `Tutor`, `Alerta`, `AdesaoMedicamento`, `Clinica`, `EventoClinico`, `Medicamento` e `CollarLeitura`.
+- **Serviços (`Services/`)**: Casos de uso e regras de serviço testados isoladamente com mocks do **Moq** (`PetServiceTests`, `TutorServiceTests`, `AlertaServiceTests`, `AdesaoMedicamentoServiceTests`, etc.), validando retorno de DTOs, chamadas aos repositórios e tratamento de exceções de chave não encontrada (`KeyNotFoundException`).
+- **Fixtures (`Fixtures/PetTrackTestFixtures.cs`)**: Centralização de builders e dados fake reutilizáveis.
+
+### 2. Testes de Integração (`PetTrack.IntegrationTests`)
+- **`CustomWebApplicationFactory<Program>`**: Sobe o pipeline HTTP completo em memória substituindo o banco Oracle por um banco **InMemory Database isolado por execução** e populando dados de seed.
+- **Validação de Códigos HTTP**:
+  - `200 OK`: `GetAll`, `GetById`, `GetPetsComAlertasPendentes`, `/health/live`, `/metrics`.
+  - `201 Created`: `Create` com cabeçalho `Location` de recurso criado.
+  - `204 NoContent`: `Delete` de recurso existente.
+  - `400 BadRequest`: Validações de payload e regras inválidas.
+  - `404 NotFound`: Busca e exclusão de IDs inexistentes (`/api/pets/99999`, `/api/tutores/99999`).
+
+### 3. Como Executar os Testes
+
+Para executar toda a suíte de testes unitários e de integração:
+
+```bash
+# Executar todos os testes da solução
+dotnet test
+
+# Executar apenas testes unitários
+dotnet test PetTrack.UnitTests/PetTrack.UnitTests.csproj
+
+# Executar apenas testes de integração
+dotnet test PetTrack.IntegrationTests/PetTrack.IntegrationTests.csproj
+
+# Executar testes com relatório detalhado
+dotnet test --logger "console;verbosity=detailed"
+```
+
+---
+
+## 📡 Endpoints da API REST & Swagger UI
+
+Quando a aplicação estiver em execução, o Swagger UI interativo estará disponível em:
+👉 **`http://localhost:5084/swagger`**
+
+| Recurso | Método | Endpoint | Descrição |
+|---|---|---|---|
+| **Health** | GET | `/health` | Visão completa do status de saúde |
+| **Health Live** | GET | `/health/live` | Liveness probe do processo |
+| **Health Ready** | GET | `/health/ready` | Readiness probe de banco e serviços |
+| **Métricas** | GET | `/metrics` | Exportação de métricas OpenTelemetry / Prometheus |
+| **Pets** | GET | `/api/pets` | Lista todos os pets |
+| **Pets** | GET | `/api/pets/{id}` | Busca pet por ID |
+| **Pets** | GET | `/api/pets/clinica/{idClinica}` | Lista pets por clínica |
+| **Pets** | GET | `/api/pets/sexo?sexo=M` | Filtra pets por sexo |
+| **Pets** | GET | `/api/pets/buscar?busca=Rex` | Busca por nome ou espécie |
+| **Pets** | GET | `/api/pets/alertasPendentes` | Lista pets com alertas não resolvidos |
+| **Pets** | POST | `/api/pets` | Cadastra um novo pet |
+| **Pets** | PUT | `/api/pets/{id}` | Atualiza dados do pet |
+| **Pets** | DELETE | `/api/pets/{id}` | Remove pet do cadastro |
+| **Tutores** | GET | `/api/tutores` | Lista todos os tutores |
+| **Tutores** | GET | `/api/tutores/{id}` | Busca tutor por ID |
+| **Tutores** | GET | `/api/tutores/buscar?busca=Moises` | Busca por nome ou email |
+| **Tutores** | POST | `/api/tutores` | Cadastra um novo tutor |
+| **Tutores** | PUT | `/api/tutores/{id}` | Atualiza dados do tutor |
+| **Tutores** | DELETE | `/api/tutores/{id}` | Remove tutor |
+| **Alertas** | GET | `/api/alertas` | Lista alertas gerados |
+| **Alertas** | GET | `/api/alertas/tipo?tipo=FEBRE` | Alertas por tipo |
+| **Alertas** | GET | `/api/alertas/pendentes/{idPet}` | Alertas pendentes de um pet |
+| **Alertas** | POST | `/api/alertas` | Registra novo alerta |
+| **Collar** | GET | `/api/collarleituras` | Lista leituras do colar IoT |
+| **Collar** | GET | `/api/collarleituras/ultima/{idPet}` | Retorna última telemetria lida |
+| **Collar** | POST | `/api/collarleituras` | Registra nova telemetria IoT |
+| **Medicamentos** | GET | `/api/medicamentos` | Lista prescrições e medicamentos |
+| **Adesões** | GET | `/api/adesoemedicamento` | Histórico de doses administradas |
+
+---
+
+## 🚀 Instruções de Instalação e Execução
+
+### Pré-requisitos
+- [.NET 10 SDK](https://dotnet.microsoft.com/download) ou superior;
+- Acesso de rede à base Oracle (VPN FIAP ou rede local do laboratório).
+
+### Passo a Passo
+
+1. **Clonar o Repositório:**
+```bash
+git clone https://github.com/Challenge-PetTrack/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET.git
+cd ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack
+```
+
+2. **Configurar a String de Conexão com Oracle (se necessário):**
+No arquivo `PetTrack.API/appsettings.json`:
+```json
+{
+  "ConnectionStrings": {
+    "PetTrackContextOracle": "Data Source=oracle.fiap.com.br:1521/ORCL;User Id=rm563719;Password=fiap;"
+  }
+}
+```
+
+3. **Restaurar os Pacotes NuGet:**
 ```bash
 dotnet restore
 ```
 
-### 4. Aplicar migrations
+4. **Compilar a Solução:**
 ```bash
-dotnet ef migrations add Initial --project PetTrack.Infrastructure --startup-project PetTrack.API
-dotnet ef database update --project PetTrack.Infrastructure --startup-project PetTrack.API
+dotnet build
 ```
 
-### 5. Rodar a aplicação
+5. **Executar a Suíte de Testes:**
 ```bash
-dotnet run --project PetTrack.API
+dotnet test
 ```
 
-A API estará disponível em:
-- Swagger UI: `http://localhost:5084/swagger`
-
----
-
-## 📦 Pacotes NuGet
-
-| Pacote | Projeto |
-|---|---|
-| `Oracle.EntityFrameworkCore` | Infrastructure |
-| `Microsoft.EntityFrameworkCore` | Infrastructure |
-| `Microsoft.EntityFrameworkCore.Tools` | Infrastructure |
-| `Swashbuckle.AspNetCore` | API |
-| `Microsoft.EntityFrameworkCore.Design` | API |
-
----
-
-## 📁 Estrutura do Repositório
-
-```
-PetTrack/
-├── PetTrack.API/
-│   ├── Controllers/
-│   ├── Exceptions/
-│   ├── Swagger/
-│   ├── Properties/
-│   ├── appsettings.json
-│   └── Program.cs
-├── PetTrack.Application/
-│   ├── DTO/
-│   │   ├── Requests/
-│   │   └── Responses/
-│   └── Interfaces/
-│       ├── Repositories/
-│       └── Services/
-├── PetTrack.Domain/
-│   ├── Entities/
-│   └── Enum/
-├── PetTrack.Infrastructure/
-│   └── Persistence/
-│       ├── Configurations/
-│       ├── Repositories/
-│       └── PetTrackContext.cs
-└── README.md
+6. **Iniciar a Aplicação:**
+```bash
+dotnet run --project PetTrack.API/PetTrack.API.csproj
 ```
 
 ---
 
-> Projeto desenvolvido para o **Challenge FIAP 2026** — Clyvo Vet × 2TDS Fevereiro
+## 📦 Tecnologias e Pacotes Utilizados
+
+| Pacote / Tecnologia | Versão | Função no Projeto |
+|---|---|---|
+| **.NET SDK** | 10.0 | Plataforma de desenvolvimento e runtime principal |
+| **Oracle.EntityFrameworkCore** | 9.23.60 | Provedor EF Core oficial para banco Oracle |
+| **Microsoft.EntityFrameworkCore** | 9.0.14 | ORM para mapeamento objeto-relacional |
+| **Serilog.AspNetCore** | 9.0.0 | Structured Logging para Console e arquivos rotativos |
+| **Serilog.Sinks.File** | 6.0.0 | Sink de persistência de log com rotação diária |
+| **AspNetCore.HealthChecks.UI.Client** | 9.0.0 | Serializador padronizado de Health Checks em JSON |
+| **OpenTelemetry.Extensions.Hosting** | 1.11.2 | Framework de observabilidade e tracing distribuído |
+| **OpenTelemetry.Exporter.Prometheus.AspNetCore** | 1.11.2-beta.1 | Exportador de métricas no padrão Prometheus (`/metrics`) |
+| **xUnit** | 2.9.2 | Framework de execução de testes unitários e de integração |
+| **Moq** | 4.20.72 | Framework de Mocking para isolamento de dependências |
+| **FluentAssertions** | 6.12.2 | Assertions fluentes e expressivas nos testes AAA |
+| **Microsoft.AspNetCore.Mvc.Testing** | 9.0.0 | Factory de testes de integração HTTP in-memory |
+| **Microsoft.EntityFrameworkCore.InMemory** | 9.0.0 | Banco de dados em memória para testes de integração |
+| **Swashbuckle.AspNetCore** | 7.2.0 | Documentação interativa via OpenAPI / Swagger UI |
+
+---
+
+> Projeto acadêmico desenvolvido para o **Challenge FIAP 2026** — 2º Ano Análise e Desenvolvimento de Sistemas (Turma 2TDSPF).
