@@ -42,8 +42,6 @@ public class Program
 
         builder.Services.AddControllers();
 
-        
-        
         // 2. Repositories
         builder.Services.AddScoped<ITutorRepository, TutorRepository>();
         builder.Services.AddScoped<IClinicaRepository, ClinicaRepository>();
