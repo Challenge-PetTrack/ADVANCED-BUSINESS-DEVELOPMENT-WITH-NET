@@ -10,7 +10,7 @@
 |---|---|---|
 | **Gabriel Sbrana Campos** | RM 565849 | 2TDSPF |
 | **Moisés Waidemann** | RM 563719 | 2TDSPF |
-| **Thiago Rodrigues da Mota** | RM 563765 | 2TDSPF |
+| **Thiago Rodrigues da Mota** | RM 563650 | 2TDSPF |
 | **Richard Freitas** | RM 566127 | 2TDSPF |
 
 - **Instituição:** FIAP — Faculdade de Informática e Administração Paulista
