@@ -75,5 +75,57 @@ public class PetRepository : IPetRepository
         return true;
     }
 
+    public (IReadOnlyList<Pet> Items, int TotalCount) GetPaged(
+        string? nome,
+        string? especie,
+        string? raca,
+        SexoPetEnum? sexo,
+        long? clinicaId,
+        long? tutorId,
+        string? sortBy,
+        string? sortDirection,
+        int pageNumber,
+        int pageSize)
+    {
+        var query = _context.Pets
+            .Include(p => p.Tutor)
+            .Include(p => p.Clinica)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(nome))
+            query = query.Where(p => p.Nome.ToLower().Contains(nome.ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(especie))
+            query = query.Where(p => p.Especie.ToLower().Contains(especie.ToLower()));
+
+        if (!string.IsNullOrWhiteSpace(raca))
+            query = query.Where(p => p.Raca != null && p.Raca.ToLower().Contains(raca.ToLower()));
+
+        if (sexo.HasValue)
+            query = query.Where(p => p.Sexo == sexo.Value);
+
+        if (clinicaId.HasValue)
+            query = query.Where(p => p.Clinica.Id == clinicaId.Value);
+
+        if (tutorId.HasValue)
+            query = query.Where(p => p.Tutor.Id == tutorId.Value);
+
+        var isDesc = string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase);
+
+        query = (sortBy?.ToLower()) switch
+        {
+            "id" => isDesc ? query.OrderByDescending(p => p.Id) : query.OrderBy(p => p.Id),
+            "idade" => isDesc ? query.OrderByDescending(p => p.Idade) : query.OrderBy(p => p.Idade),
+            "peso" => isDesc ? query.OrderByDescending(p => p.Peso) : query.OrderBy(p => p.Peso),
+            "especie" => isDesc ? query.OrderByDescending(p => p.Especie) : query.OrderBy(p => p.Especie),
+            _ => isDesc ? query.OrderByDescending(p => p.Nome) : query.OrderBy(p => p.Nome)
+        };
+
+        var total = query.Count();
+        var items = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+        return (items, total);
+    }
+
     public void SaveChanges() => _context.SaveChanges();
 }

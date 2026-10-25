@@ -1,10 +1,11 @@
+using PetTrack.Application.DTO.Common;
 using PetTrack.Domain.Entities;
 using PetTrack.Domain.Enum;
 
 namespace PetTrack.Application.DTO.Responses;
 
 /// <summary>
-/// Resposta com dados do Pet.
+/// Resposta com dados do Pet e links HATEOAS.
 /// </summary>
 /// <param name="Id">Identificador único do Pet gerado pelo Oracle.</param>
 /// <param name="Nome">Nome do pet.</param>
@@ -28,6 +29,9 @@ public record PetResponse(
     TutorResponse Tutor,
     ClinicaResponse Clinica)
 {
+    /// <summary>Links hipermidiáticos HATEOAS do recurso.</summary>
+    public List<LinkDto> Links { get; set; } = [];
+
     /// <summary>Converte a entidade Pet para o DTO de resposta.</summary>
     public static PetResponse ToDTO(Pet pet) => new(
         pet.Id,

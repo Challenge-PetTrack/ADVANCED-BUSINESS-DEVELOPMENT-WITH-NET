@@ -38,7 +38,28 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             {
                 options.UseInMemoryDatabase(_dbName);
             });
+
+            // Replace MongoDB repository with in-memory double for test isolation
+            var mongoRepoDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(PetTrack.Application.Interfaces.Repositories.IPetMongoRepository));
+            if (mongoRepoDescriptor != null)
+            {
+                services.Remove(mongoRepoDescriptor);
+            }
+            services.AddSingleton<PetTrack.Application.Interfaces.Repositories.IPetMongoRepository, InMemoryPetMongoRepository>();
         });
+    }
+
+    /// <summary>
+    /// Cria um HttpClient pré-configurado com cabeçalho Authorization Bearer JWT.
+    /// </summary>
+    public HttpClient CreateAuthenticatedClient(string email = "admin@pettrack.com", string name = "Administrador", string role = "Admin")
+    {
+        var client = CreateClient();
+        using var scope = Services.CreateScope();
+        var tokenService = scope.ServiceProvider.GetRequiredService<PetTrack.Application.Interfaces.Services.ITokenService>();
+        var token = tokenService.GenerateToken(email, name, role);
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        return client;
     }
 
     protected override IHost CreateHost(IHostBuilder builder)

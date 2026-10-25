@@ -26,6 +26,7 @@
     <ItemGroup>
         <ProjectReference Include="..\PetTrack.Domain\PetTrack.Domain.csproj" />
         <ProjectReference Include="..\PetTrack.Application\PetTrack.Application.csproj" />
+        <ProjectReference Include="..\PetTrack.Infrastructure\PetTrack.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

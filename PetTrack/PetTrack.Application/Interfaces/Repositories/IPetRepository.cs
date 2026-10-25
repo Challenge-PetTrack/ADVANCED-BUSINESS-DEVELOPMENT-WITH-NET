@@ -32,6 +32,19 @@ public interface IPetRepository
     /// <summary>Remove um pet pelo identificador.</summary>
     bool Delete(long id);
 
+    /// <summary>Retorna pets paginados, ordenados e filtrados.</summary>
+    (IReadOnlyList<Pet> Items, int TotalCount) GetPaged(
+        string? nome,
+        string? especie,
+        string? raca,
+        SexoPetEnum? sexo,
+        long? clinicaId,
+        long? tutorId,
+        string? sortBy,
+        string? sortDirection,
+        int pageNumber,
+        int pageSize);
+
     /// <summary>Persiste as alterações no banco de dados.</summary>
     void SaveChanges();
 }

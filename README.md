@@ -1,6 +1,6 @@
-# 🐾 PetTrack API — ASP.NET Core & Clyvo Vet (Sprint 3)
+# 🐾 PetTrack API — ASP.NET Core & Clyvo Vet (Sprint 4 — Consolidação Final)
 
-> **Sistema Operacional da Saúde Contínua do Pet** — API REST desenvolvida em **ASP.NET Core (.NET 10)** com **Clean Architecture**, conectada ao **Oracle Database**, equipada com **Observabilidade completa (Serilog, Health Checks, OpenTelemetry / Prometheus)** e **Testes Automatizados com padrão AAA (xUnit, Moq, FluentAssertions, WebApplicationFactory)** para o **Challenge FIAP 2026** em parceria com a **Clyvo Vet**.
+> **Sistema Operacional da Saúde Contínua do Pet** — Aplicação completa e consolidada em **ASP.NET Core (.NET 10)** seguindo **Clean Architecture**, equipada com **Persistência Híbrida (Oracle Relacional + MongoDB NoSQL)**, **Autenticação e Autorização JWT Bearer**, **HATEOAS**, **Paginação, Ordenação e Filtros Dinâmicos**, **Observabilidade Total (Serilog, Health Checks, OpenTelemetry / Prometheus)** e **Suíte de Testes Automatizados com Padrão AAA (127 testes: 96 Unitários + 31 de Integração, 100% de aprovação)** para o **Challenge FIAP 2026** em parceria com a **Clyvo Vet**.
 
 ---
 
@@ -22,153 +22,279 @@
 
 ## 📋 Sumário
 1. [Visão Geral do Projeto](#-visão-geral-do-projeto)
-2. [Arquitetura da Solução](#-arquitetura-da-solução)
-3. [Observabilidade e Monitoramento](#-observabilidade-e-monitoramento)
+2. [Arquitetura da Solução & Diagramas](#-arquitetura-da-solução--diagramas)
+3. [Autenticação e Autorização JWT](#-autenticação-e-autorização-jwt)
+4. [Paginação, Ordenação, Filtros e HATEOAS](#-paginação-ordenação-filtros-e-hateoas)
+5. [Persistência Híbrida: Relacional (Oracle) & NoSQL (MongoDB)](#-persistência-híbrida-oracle--mongodb)
+6. [Observabilidade e Monitoramento](#-observabilidade-e-monitoramento)
    - [Health Checks (`/health`, `/health/live`, `/health/ready`)](#1-health-checks)
    - [Structured Logging com Serilog](#2-structured-logging-com-serilog)
    - [Distributed Tracing & Métricas Prometheus via OpenTelemetry](#3-distributed-tracing--métricas-prometheus-via-opentelemetry)
-4. [Testes Automatizados com Padrão AAA](#-testes-automatizados-com-padrão-aaa)
-   - [PetTrack.UnitTests (xUnit + Moq + FluentAssertions)](#1-testes-unitários-pettrackunittests)
-   - [PetTrack.IntegrationTests (WebApplicationFactory + InMemory)](#2-testes-de-integração-pettrackintegrationtests)
-   - [Como Executar a Suíte de Testes](#3-como-executar-os-testes)
-5. [Endpoints da API REST & Swagger UI](#-endpoints-da-api-rest--swagger-ui)
-6. [Instruções de Instalação e Execução](#-instruções-de-instalação-e-execução)
-7. [Tecnologias e Pacotes Utilizados](#-tecnologias-e-pacotes-utilizados)
+7. [Testes Automatizados com Padrão AAA (127 Testes)](#-testes-automatizados-com-padrão-aaa)
+   - [PetTrack.UnitTests (96 testes)](#1-testes-unitários-pettrackunittests)
+   - [PetTrack.IntegrationTests (31 testes)](#2-testes-de-integração-pettrackintegrationtests)
+   - [Como Executar os Testes](#3-como-executar-a-suíte-de-testes)
+8. [Catálogo Completo de Endpoints REST & Swagger UI](#-catálogo-completo-de-endpoints-rest--swagger-ui)
+9. [Instruções de Instalação e Execução](#-instruções-de-instalação-e-execução)
+10. [Tecnologias e Pacotes Utilizados](#-tecnologias-e-pacotes-utilizados)
 
 ---
 
 ## 📌 Visão Geral do Projeto
 
-O **PetTrack** é um ecossistema digital para acompanhamento contínuo da saúde preventiva de cães e gatos. Ele integra:
-- Cadastro e gestão de tutores, animais e clínicas veterinárias;
-- Histórico clínico, prescrição e controle de adesão a medicamentos;
-- Monitoramento telemétrico e corporal contínuo via coleiras inteligentes (**Colares IoT Clyvo**);
-- Detecção preventiva de anomalias (febre, sedentarismo, obesidade, falhas de adesão terapêutica) gerando **Alertas** e **Notificações** em tempo real;
-- Compatibilidade e consistência transacional com o banco de dados Oracle relacional compartilhado com as demais disciplinas (Mastering Relational and Non-Relational Database e Java Advanced).
+O **PetTrack** é uma solução de ponta a ponta voltada ao acompanhamento contínuo da saúde preventiva de cães e gatos. Ele conecta tutores, clínicas veterinárias e dispositivos IoT de monitoramento em um ecossistema inteligente e seguro:
+- **Gestão Cadastral Completa:** Tutores, pets e clínicas veterinárias interligados relacionalmente.
+- **Histórico Clínico e Farmacológico:** Registro de prescrições, eventos clínicos e monitoramento rigoroso de adesão medicamentosa.
+- **Telemetria Contínua IoT Clyvo:** Coleta contínua de temperatura, frequência cardíaca, atividade e localização emitida por colares inteligentes.
+- **Detecção de Anomalias:** Motor de regras e emissão automática de alertas clínicos e notificações em tempo real.
+- **Alta Disponibilidade e Performance com Persistência Híbrida:** 
+  - Banco Relacional **Oracle Database** para consistência ACID e transações críticas;
+  - Banco NoSQL **MongoDB** para consultas rápidas desnormalizadas e agregação de documentos de animais.
 
 ---
 
-## 🏗️ Arquitetura da Solução
+## 🏗️ Arquitetura da Solução & Diagramas
 
-O projeto adota os princípios da **Clean Architecture** (Arquitetura Limpa) e **Domain-Driven Design (DDD)**:
+O projeto adota rigorosamente a **Clean Architecture** (Arquitetura Limpa), os princípios **SOLID** e **Domain-Driven Design (DDD)**:
 
 ```
 PetTrack/
-├── PetTrack.API/                  → Entrypoint HTTP, Controllers, Middleware de Exceção, Swagger, Serilog, OpenTelemetry, Health Checks
-├── PetTrack.Application/          → Casos de uso, DTOs (Requests/Responses), Interfaces de Services/Repositories, Métricas customizadas
-├── PetTrack.Domain/               → Entidades de Domínio, Invariantes e Regras de Negócio Puras, Enums
-├── PetTrack.Infrastructure/       → DbContext EF Core, Mapeamentos Fluent API, Repositórios de Persistência Oracle
-├── PetTrack.UnitTests/            → Testes Unitários de Domínio e Serviços (xUnit + Moq + FluentAssertions + Fixtures)
-└── PetTrack.IntegrationTests/     → Testes de Integração de API End-to-End (WebApplicationFactory + InMemory DB)
+├── PetTrack.API/                  → Entrypoint HTTP, Controllers REST, Middleware JWT, Global Exception Handler, Swagger, Serilog, OpenTelemetry, Health Checks
+├── PetTrack.Application/          → Casos de uso, DTOs (Requests/Responses), Interfaces de Repositórios/Serviços, Paginação, HATEOAS, Métricas
+├── PetTrack.Domain/               → Entidades de Domínio, Invariantes de Negócio, Documentos NoSQL (PetMongoDocument), Enums
+├── PetTrack.Infrastructure/       → DbContext EF Core, Mapeamentos Fluent API Oracle, MongoDB Context & Repositórios Concretos, TokenService JWT
+├── PetTrack.UnitTests/            → Testes Unitários de Domínio, Serviços, JWT, Paginação, HATEOAS e NoSQL (xUnit + Moq + FluentAssertions)
+└── PetTrack.IntegrationTests/     → Testes de Integração End-to-End da API HTTP (WebApplicationFactory + InMemory Database + Token Bearer)
 ```
 
-### Regras de Dependência:
+### Diagrama da Arquitetura (Mermaid)
+
+```mermaid
+graph TD
+    subgraph ClientLayer["Clientes / Consumidores"]
+        Swagger["Swagger UI / OpenAPI"]
+        ClientApp["App Mobile / Clyvo Frontend"]
+        PromClient["Prometheus Scraper"]
+    end
+
+    subgraph APILayer["PetTrack.API (ASP.NET Core .NET 10)"]
+        Middlewares["Exception Handling (RFC 7807) & Serilog Logging"]
+        AuthMiddleware["JWT Authentication & Authorization"]
+        Controllers["Controllers REST (Pets, Tutores, Alertas, MongoPets, Auth)"]
+        HealthEndpoint["Health Checks (/health, /live, /ready)"]
+        MetricsEndpoint["Metrics Endpoint (/metrics)"]
+    end
+
+    subgraph AppLayer["PetTrack.Application"]
+        AppServices["Services (PetService, PetMongoService, etc.)"]
+        HateoasEngine["HATEOAS & PagedResult Engine"]
+        TokenContract["ITokenService / Interfaces"]
+        OTelMetrics["PetTrackMetrics (Meters)"]
+    end
+
+    subgraph DomainLayer["PetTrack.Domain"]
+        Entities["Entidades de Negócio (Pet, Tutor, Alerta, etc.)"]
+        MongoDocs["Documentos NoSQL (PetMongoDocument)"]
+        Invariants["Invariantes e Regras Puras"]
+    end
+
+    subgraph InfraLayer["PetTrack.Infrastructure"]
+        EFCore["PetTrackContext (EF Core)"]
+        OracleProvider["Oracle.EntityFrameworkCore"]
+        MongoContext["PetTrackMongoContext (MongoDB.Driver)"]
+        TokenImpl["TokenService (JWT HmacSha256)"]
+        Repos["Repositórios Concretos (Relacionais e NoSQL)"]
+    end
+
+    subgraph DataLayer["Bancos de Dados"]
+        OracleDB[("Oracle Database 19c\n(Tabelas TB_*, Sequences)")]
+        MongoDBServer[("MongoDB 8.0 NoSQL\n(Base: pettrack_sprint4 / Coleção: pets)")]
+    end
+
+    ClientApp -->|HTTP Bearer JWT| Middlewares
+    Swagger -->|Bearer Token| Middlewares
+    PromClient -->|GET /metrics| MetricsEndpoint
+
+    Middlewares --> AuthMiddleware
+    AuthMiddleware --> Controllers
+    Controllers --> AppServices
+    AppServices --> HateoasEngine
+    AppServices --> DomainLayer
+    AppServices --> Repos
+    Repos --> EFCore
+    Repos --> MongoContext
+    EFCore --> OracleProvider --> OracleDB
+    MongoContext --> MongoDBServer
+    TokenContract -.-> TokenImpl
+    HealthEndpoint --> EFCore
+    HealthEndpoint --> MongoContext
 ```
-[PetTrack.API] ───► [PetTrack.Application] ───► [PetTrack.Domain]
-      │                       ▲
-      ▼                       │
-[PetTrack.Infrastructure] ────┘
+
+---
+
+## 🔐 Autenticação e Autorização JWT
+
+A API implementa autenticação baseada em **JSON Web Token (JWT Bearer)** com assinatura simétrica HMAC-SHA256 e controle de acesso baseado em perfis (**Role-Based Access Control - RBAC**):
+
+### Perfis de Acesso Disponíveis:
+- **`Admin`**: Acesso total a todas as operações de mutação (cadastro, edição, remoção e sincronização relacional/NoSQL).
+- **`Veterinario`**: Acesso para criação de diagnósticos, consultas clínicas e atualização de status de saúde.
+- **`Tutor`**: Acesso de visualização e registro de adesão a medicamentos do seu próprio pet.
+
+### Credenciais Padrão Pré-configuradas para Testes/Avaliação:
+| E-mail | Senha | Perfil (Role) |
+|---|---|---|
+| `admin@pettrack.com` | `admin123` | **Admin** |
+| `vet@clyvovet.com` | `vet123` | **Veterinario** |
+| `tutor@pettrack.com` | `tutor123` | **Tutor** |
+
+### Fluxo de Autenticação:
+1. Envie um `POST /api/auth/login` com email e senha.
+2. A API valida as credenciais e devolve o token JWT com claims e tempo de expiração.
+3. Nas rotas protegidas (`[Authorize]`), envie o cabeçalho HTTP:
+   ```http
+   Authorization: Bearer <seu_token_jwt>
+   ```
+4. No **Swagger UI**, clique no botão **Authorize 🔓** no topo da página e informe: `Bearer <seu_token_jwt>`.
+
+---
+
+## 📄 Paginação, Ordenação, Filtros e HATEOAS
+
+A API atende integralmente ao nível de maturidade REST com hipermídia (**HATEOAS**) e suporte a consultas paginadas e ordenadas:
+
+### 1. Endpoint Paginado: `GET /api/pets/paged`
+Parâmetros aceitos na Query String:
+- `pageNumber`: Número da página (padrão: `1`).
+- `pageSize`: Quantidade de itens por página (padrão: `10`, máx: `50`).
+- `sortBy`: Campo para ordenação (`Nome`, `Id`, `Idade`, `Peso`, `Especie`).
+- `sortDirection`: Direção da ordenação (`asc` ou `desc`).
+- `nome`, `especie`, `raca`, `sexo` (`M` ou `F`), `clinicaId`, `tutorId`: Filtros dinâmicos opcionais.
+
+#### Exemplo de Resposta Paginada com Links HATEOAS:
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "nome": "Thor",
+      "especie": "Canina",
+      "raca": "Golden Retriever",
+      "sexo": "M",
+      "idade": 3.5,
+      "peso": 28.5,
+      "dataCadastro": "2026-05-22T21:41:50",
+      "tutor": { "id": 1, "nome": "Moisés Waidemann" },
+      "clinica": { "id": 1, "nome": "Clyvo Vet Care" },
+      "links": [
+        { "href": "/api/pets/1", "rel": "self", "method": "GET" },
+        { "href": "/api/pets/1", "rel": "update", "method": "PUT" },
+        { "href": "/api/pets/1", "rel": "delete", "method": "DELETE" },
+        { "href": "/api/pets", "rel": "all", "method": "GET" },
+        { "href": "/api/pets/paged", "rel": "paged", "method": "GET" }
+      ]
+    }
+  ],
+  "pageNumber": 1,
+  "pageSize": 10,
+  "totalItems": 15,
+  "totalPages": 2,
+  "hasPreviousPage": false,
+  "hasNextPage": true,
+  "links": [
+    { "href": "/api/pets/paged?pageSize=10&sortBy=Nome&sortDirection=asc&pageNumber=1", "rel": "self", "method": "GET" },
+    { "href": "/api/pets/paged?pageSize=10&sortBy=Nome&sortDirection=asc&pageNumber=1", "rel": "first", "method": "GET" },
+    { "href": "/api/pets/paged?pageSize=10&sortBy=Nome&sortDirection=asc&pageNumber=2", "rel": "last", "method": "GET" },
+    { "href": "/api/pets/paged?pageSize=10&sortBy=Nome&sortDirection=asc&pageNumber=2", "rel": "next", "method": "GET" },
+    { "href": "/api/pets", "rel": "create", "method": "POST" }
+  ]
+}
 ```
+
+---
+
+## 🗄️ Persistência Híbrida: Oracle & MongoDB
+
+A solução implementa arquitetura de persistência poliglota (**Polyglot Persistence**) com separação clara de responsabilidades via **Repository Pattern**:
+
+### 1. Banco Relacional (Oracle Database)
+- **Tecnologia:** Entity Framework Core (`Oracle.EntityFrameworkCore`).
+- **Finalidade:** Modelagem relacional transacional ACID com 12 tabelas (`TB_PET`, `TB_TUTOR`, `TB_CLINICA`, `TB_ALERTA`, `TB_MEDICAMENTO`, `TB_ADESAO_MEDICAMENTO`, etc.), integridade referencial com chaves estrangeiras e sequências numéricas (`SEQ_*`).
+- **Migrações:** Histórico de migrações EF Core localizado em `PetTrack.Infrastructure/Migrations/`.
+
+### 2. Banco NoSQL (MongoDB)
+- **Tecnologia:** Driver oficial .NET `MongoDB.Driver`.
+- **Finalidade:** Base de documentos de alta performance para visualização desnormalizada e rápida dos animais com seus vínculos.
+- **Configuração:**
+  - **Conexão:** `mongodb://127.0.0.1:27017`
+  - **Base de Dados:** `pettrack_sprint4`
+  - **Coleção:** `pets`
+- **Operações NoSQL Reais Suportadas:**
+  - `GET /api/mongopets`: listagem de todos os documentos NoSQL com HATEOAS.
+  - `GET /api/mongopets/{id}`: busca por ID primário do documento.
+  - `GET /api/mongopets/tutor/{tutorId}`: consulta por tutor embutido.
+  - `GET /api/mongopets/clinica/{clinicaId}`: consulta por clínica embutida.
+  - `POST /api/mongopets`: inserção de documento NoSQL.
+  - `PUT /api/mongopets/{id}`: atualização de documento NoSQL.
+  - `DELETE /api/mongopets/{id}`: remoção de documento NoSQL.
+  - `POST /api/mongopets/sync`: sincronização automática das entidades relacionais do Oracle para a base NoSQL do MongoDB pelo backend .NET.
 
 ---
 
 ## 🔭 Observabilidade e Monitoramento
 
 ### 1. Health Checks
-A aplicação expõe 3 endpoints especializados de integridade com resposta formatada em JSON detalhado (`UIResponseWriter.WriteHealthCheckUIResponse`):
+A aplicação expõe 3 endpoints padronizados com resposta formatada em JSON detalhado (`UIResponseWriter.WriteHealthCheckUIResponse`):
 
-- **`/health`**: Visão completa e consolidada do status de saúde de todos os subsistemas da API.
-- **`/health/live`**: *Liveness Probe* do Kubernetes/Cloud para verificar se o processo da API está ativo e respondendo (`self`).
-- **`/health/ready`**: *Readiness Probe* para validar se a aplicação está pronta para receber tráfego, testando o banco de dados Oracle (`oracle_db`) e o gateway de telemetria dos colares IoT (`clyvo_iot_service`).
-
-#### Exemplo de Resposta de `/health`:
-```json
-{
-  "status": "Healthy",
-  "totalDuration": "00:00:00.0123456",
-  "entries": {
-    "self": {
-      "data": {},
-      "description": "API PetTrack online e responsiva",
-      "duration": "00:00:00.0001234",
-      "status": "Healthy",
-      "tags": ["live"]
-    },
-    "oracle_db": {
-      "data": {},
-      "duration": "00:00:00.0054321",
-      "status": "Healthy",
-      "tags": ["ready", "db"]
-    },
-    "clyvo_iot_service": {
-      "data": {
-        "clyvo_iot_gateway": "Connected",
-        "response_time_ms": 12,
-        "firmware_supported_version": "v2.4.0"
-      },
-      "description": "Serviço de telemetria IoT Clyvo operando normalmente.",
-      "duration": "00:00:00.0003210",
-      "status": "Healthy",
-      "tags": ["ready", "integration"]
-    }
-  }
-}
-```
-
----
+- **`/health`**: Visão completa e consolidada de integridade de todos os subsistemas da API.
+- **`/health/live`**: *Liveness Probe* do Kubernetes/Cloud para verificar se o processo da API está ativo e responsivo (`self`).
+- **`/health/ready`**: *Readiness Probe* validando a conectividade com ambos os bancos de dados (**Oracle** e **MongoDB**) e com o serviço IoT:
+  - `oracle_db`: Conexão com o banco relacional Oracle via EF Core;
+  - `mongodb`: Conexão com a base NoSQL MongoDB (`pettrack_sprint4`) via ping ativo;
+  - `clyvo_iot_service`: Conectividade do gateway de telemetria dos colares IoT.
 
 ### 2. Structured Logging com Serilog
-A API foi instrumentada com **Serilog**, capturando eventos e logs estruturados em dois destinos simultâneos:
+A API realiza logging contextualizado e estruturado em dois sinks simultâneos:
 1. **Console**: Colorido com enriquecimento de contexto (`FromLogContext`, timestamp, trace ID);
-2. **Arquivo Rotativo Diário**: Gravado em `logs/pettrack-.log` com retenção automática de 7 dias (`rollingInterval: Day`).
-
-#### Exemplo de Formato Estruturado:
-```
-2026-09-08 20:05:45.123 -03:00 [INF] [d8a7c8164b321a] [PetTrack.API.Controllers.PetsController] HTTP POST /api/pets responded 201 in 14.523 ms
-```
-
----
+2. **Arquivo Rotativo Diário**: Gravado em `logs/pettrack-.log` com retenção automática de 7 dias.
 
 ### 3. Distributed Tracing & Métricas Prometheus via OpenTelemetry
-A aplicação utiliza a biblioteca padrão **OpenTelemetry** com exportação nativa no endpoint:
-- **`/metrics`**: Endpoint no formato padrão do Prometheus contendo métricas de runtime, ASP.NET Core, HttpClient e métricas de negócio exclusivas da PetTrack:
-  - `pettrack_pets_created_total`: Contador acumulado de pets cadastrados;
-  - `pettrack_tutores_created_total`: Contador acumulado de tutores cadastrados;
-  - `pettrack_alertas_created_total`: Contador acumulado de alertas clínicos/preventivos emitidos;
-  - `pettrack_collar_readings_total`: Contador de telemetrias processadas do colar inteligente;
-  - `pettrack_adesao_medicamento_total`: Contador de doses administradas/registradas.
+Métricas de runtime, requisições HTTP e métricas de negócio expostas em:
+- **`/metrics`**: Endpoint compatível com Prometheus contendo contadores customizados (`pettrack_pets_created_total`, `pettrack_tutores_created_total`, `pettrack_alertas_created_total`, etc.).
 
 ---
 
 ## 🧪 Testes Automatizados com Padrão AAA
 
-A suíte possui **86 testes automatizados (100% de aprovação)** organizados rigorosamente sob a convenção:
+A suíte possui **127 testes automatizados (100% de aprovação, 0 falhas)** organizados rigorosamente sob a convenção:
 `MetodoTestado_Cenario_ResultadoEsperado` e divididos em **Arrange, Act e Assert**.
 
 ```
-Aprovado! – Total: 86 testes (71 Unitários + 15 de Integração) – Falhas: 0
+Aprovado! – Total: 127 testes (96 Unitários + 31 de Integração) – Falhas: 0
 ```
 
-### 1. Testes Unitários (`PetTrack.UnitTests`)
+### 1. Testes Unitários (`PetTrack.UnitTests` — 96 testes)
 - **Domínio (`Domain/`)**: Validação de invariantes, regras de negócio e lançamentos de exceções nas entidades `Pet`, `Tutor`, `Alerta`, `AdesaoMedicamento`, `Clinica`, `EventoClinico`, `Medicamento` e `CollarLeitura`.
-- **Serviços (`Services/`)**: Casos de uso e regras de serviço testados isoladamente com mocks do **Moq** (`PetServiceTests`, `TutorServiceTests`, `AlertaServiceTests`, `AdesaoMedicamentoServiceTests`, etc.), validando retorno de DTOs, chamadas aos repositórios e tratamento de exceções de chave não encontrada (`KeyNotFoundException`).
-- **Fixtures (`Fixtures/PetTrackTestFixtures.cs`)**: Centralização de builders e dados fake reutilizáveis.
+- **Serviços (`Services/`)**: 
+  - `PetServiceTests`, `TutorServiceTests`, `AlertaServiceTests`, `AdesaoMedicamentoServiceTests` com mocks Moq;
+  - `TokenServiceTests`: geração de JWT, validação de credenciais, expiração e claims de roles;
+  - `PetPaginationAndHateoasTests`: cálculo de total de páginas, normalização de limites de página e geração de links hipermídia;
+  - `PetMongoServiceTests`: inserção, consulta, atualização, exclusão e sincronização NoSQL.
 
-### 2. Testes de Integração (`PetTrack.IntegrationTests`)
-- **`CustomWebApplicationFactory<Program>`**: Sobe o pipeline HTTP completo em memória substituindo o banco Oracle por um banco **InMemory Database isolado por execução** e populando dados de seed.
-- **Validação de Códigos HTTP**:
-  - `200 OK`: `GetAll`, `GetById`, `GetPetsComAlertasPendentes`, `/health/live`, `/metrics`.
-  - `201 Created`: `Create` com cabeçalho `Location` de recurso criado.
-  - `204 NoContent`: `Delete` de recurso existente.
-  - `400 BadRequest`: Validações de payload e regras inválidas.
-  - `404 NotFound`: Busca e exclusão de IDs inexistentes (`/api/pets/99999`, `/api/tutores/99999`).
+### 2. Testes de Integração (`PetTrack.IntegrationTests` — 31 testes)
+- **`CustomWebApplicationFactory<Program>`**: Sobe o pipeline HTTP completo isolado em memória com `UseInMemoryDatabase` para o EF Core e `InMemoryPetMongoRepository` para o MongoDB (garantindo velocidade e sem onerar sessões do Oracle).
+- **Validação de Fluxos e Contratos HTTP**:
+  - `200 OK`: `GetAll`, `GetById`, `GetPaged`, `/health/live`, `/metrics`, `/api/auth/me` autenticado;
+  - `201 Created`: Inserção de pets relacionais e NoSQL com cabeçalho `Location`;
+  - `204 NoContent`: Remoção de pets relacionais e NoSQL autenticados;
+  - `400 BadRequest`: Validações de payload e regras inválidas;
+  - `401 Unauthorized`: Validação de bloqueio em endpoints protegidos (`POST /api/pets`, `DELETE /api/pets`, `POST /api/mongopets`, `GET /api/auth/me`) quando chamada sem token Bearer ou com credenciais incorretas;
+  - `404 NotFound`: Busca e exclusão de IDs inexistentes.
 
-### 3. Como Executar os Testes
-
-Para executar toda a suíte de testes unitários e de integração:
+### 3. Como Executar a Suíte de Testes
 
 ```bash
-# Executar todos os testes da solução
+# Executar todos os testes da solução (Unitários e Integração)
 dotnet test
 
 # Executar apenas testes unitários
@@ -177,72 +303,72 @@ dotnet test PetTrack.UnitTests/PetTrack.UnitTests.csproj
 # Executar apenas testes de integração
 dotnet test PetTrack.IntegrationTests/PetTrack.IntegrationTests.csproj
 
-# Executar testes com relatório detalhado
+# Executar com relatório verboso
 dotnet test --logger "console;verbosity=detailed"
 ```
 
 ---
 
-## 📡 Endpoints da API REST & Swagger UI
+## 📡 Catálogo Completo de Endpoints REST & Swagger UI
 
-Quando a aplicação estiver em execução, o Swagger UI interativo estará disponível em:
+Quando a API estiver em execução, o Swagger UI interativo com suporte a Bearer Token estará disponível em:
 👉 **`http://localhost:5084/swagger`**
 
-| Recurso | Método | Endpoint | Descrição |
-|---|---|---|---|
-| **Health** | GET | `/health` | Visão completa do status de saúde |
-| **Health Live** | GET | `/health/live` | Liveness probe do processo |
-| **Health Ready** | GET | `/health/ready` | Readiness probe de banco e serviços |
-| **Métricas** | GET | `/metrics` | Exportação de métricas OpenTelemetry / Prometheus |
-| **Pets** | GET | `/api/pets` | Lista todos os pets |
-| **Pets** | GET | `/api/pets/{id}` | Busca pet por ID |
-| **Pets** | GET | `/api/pets/clinica/{idClinica}` | Lista pets por clínica |
-| **Pets** | GET | `/api/pets/sexo?sexo=M` | Filtra pets por sexo |
-| **Pets** | GET | `/api/pets/buscar?busca=Rex` | Busca por nome ou espécie |
-| **Pets** | GET | `/api/pets/alertasPendentes` | Lista pets com alertas não resolvidos |
-| **Pets** | POST | `/api/pets` | Cadastra um novo pet |
-| **Pets** | PUT | `/api/pets/{id}` | Atualiza dados do pet |
-| **Pets** | DELETE | `/api/pets/{id}` | Remove pet do cadastro |
-| **Tutores** | GET | `/api/tutores` | Lista todos os tutores |
-| **Tutores** | GET | `/api/tutores/{id}` | Busca tutor por ID |
-| **Tutores** | GET | `/api/tutores/buscar?busca=Moises` | Busca por nome ou email |
-| **Tutores** | POST | `/api/tutores` | Cadastra um novo tutor |
-| **Tutores** | PUT | `/api/tutores/{id}` | Atualiza dados do tutor |
-| **Tutores** | DELETE | `/api/tutores/{id}` | Remove tutor |
-| **Alertas** | GET | `/api/alertas` | Lista alertas gerados |
-| **Alertas** | GET | `/api/alertas/tipo?tipo=FEBRE` | Alertas por tipo |
-| **Alertas** | GET | `/api/alertas/pendentes/{idPet}` | Alertas pendentes de um pet |
-| **Alertas** | POST | `/api/alertas` | Registra novo alerta |
-| **Collar** | GET | `/api/collarleituras` | Lista leituras do colar IoT |
-| **Collar** | GET | `/api/collarleituras/ultima/{idPet}` | Retorna última telemetria lida |
-| **Collar** | POST | `/api/collarleituras` | Registra nova telemetria IoT |
-| **Medicamentos** | GET | `/api/medicamentos` | Lista prescrições e medicamentos |
-| **Adesões** | GET | `/api/adesoemedicamento` | Histórico de doses administradas |
+| Categoria | Método | Endpoint | Protegido? | Descrição |
+|---|---|---|---|---|
+| **Auth** | POST | `/api/auth/login` | Não | Realiza login e retorna token JWT |
+| **Auth** | GET | `/api/auth/me` | **Sim (Bearer)** | Retorna dados e perfil do usuário logado |
+| **Pets** | GET | `/api/pets` | Não | Lista todos os pets com links HATEOAS |
+| **Pets** | GET | `/api/pets/paged` | Não | Consulta paginada com filtros e links HATEOAS |
+| **Pets** | GET | `/api/pets/{id}` | Não | Busca pet por ID com links HATEOAS |
+| **Pets** | GET | `/api/pets/clinica/{idClinica}` | Não | Lista pets por clínica |
+| **Pets** | GET | `/api/pets/sexo?sexo=M` | Não | Filtra pets por sexo |
+| **Pets** | GET | `/api/pets/buscar?busca=Rex` | Não | Busca por nome ou espécie |
+| **Pets** | GET | `/api/pets/alertasPendentes` | Não | Lista pets com alertas não resolvidos |
+| **Pets** | POST | `/api/pets` | **Sim (Bearer)** | Cadastra novo pet |
+| **Pets** | PUT | `/api/pets/{id}` | **Sim (Bearer)** | Atualiza dados do pet |
+| **Pets** | DELETE | `/api/pets/{id}` | **Sim (Bearer)** | Remove pet do cadastro |
+| **MongoDB** | GET | `/api/mongopets` | Não | Lista documentos NoSQL com HATEOAS |
+| **MongoDB** | GET | `/api/mongopets/{id}` | Não | Busca documento NoSQL por ID com HATEOAS |
+| **MongoDB** | GET | `/api/mongopets/tutor/{tutorId}` | Não | Lista documentos NoSQL por tutor |
+| **MongoDB** | GET | `/api/mongopets/clinica/{clinicaId}` | Não | Lista documentos NoSQL por clínica |
+| **MongoDB** | POST | `/api/mongopets` | **Sim (Bearer)** | Insere documento NoSQL no MongoDB |
+| **MongoDB** | PUT | `/api/mongopets/{id}` | **Sim (Bearer)** | Atualiza documento NoSQL no MongoDB |
+| **MongoDB** | DELETE | `/api/mongopets/{id}` | **Sim (Bearer)** | Remove documento NoSQL do MongoDB |
+| **MongoDB** | POST | `/api/mongopets/sync` | **Sim (Bearer)** | Sincroniza dados do Oracle para o MongoDB |
+| **Tutores** | GET | `/api/tutores` | Não | Lista todos os tutores |
+| **Tutores** | GET | `/api/tutores/{id}` | Não | Busca tutor por ID |
+| **Tutores** | POST | `/api/tutores` | Não | Cadastra novo tutor |
+| **Alertas** | GET | `/api/alertas` | Não | Lista alertas emitidos |
+| **Alertas** | POST | `/api/alertas` | Não | Registra novo alerta |
+| **Collar** | GET | `/api/collarleituras` | Não | Lista leituras de coleiras IoT |
+| **Collar** | POST | `/api/collarleituras` | Não | Registra telemetria de coleira IoT |
+| **Medicamentos** | GET | `/api/medicamentos` | Não | Lista medicamentos e prescrições |
+| **Adesões** | GET | `/api/adesoemedicamento` | Não | Histórico de doses administradas |
+| **Health** | GET | `/health` | Não | Status consolidado de saúde (API, Oracle, MongoDB, IoT) |
+| **Health Live** | GET | `/health/live` | Não | Liveness probe do processo |
+| **Health Ready** | GET | `/health/ready` | Não | Readiness probe dos bancos e integrações |
+| **Métricas** | GET | `/metrics` | Não | Métricas Prometheus / OpenTelemetry |
 
 ---
 
 ## 🚀 Instruções de Instalação e Execução
 
 ### Pré-requisitos
-- [.NET 10 SDK](https://dotnet.microsoft.com/download) ou superior;
-- Acesso de rede à base Oracle (VPN FIAP ou rede local do laboratório).
+- [.NET 10 SDK](https://dotnet.microsoft.com/download) instalado;
+- Servidor MongoDB local em execução em `mongodb://127.0.0.1:27017`;
+- Acesso à rede com o banco de dados Oracle FIAP (caso deseje executar contra o banco real).
 
 ### Passo a Passo
 
-1. **Clonar o Repositório:**
+1. **Navegar até a pasta da solução:**
 ```bash
-git clone https://github.com/Challenge-PetTrack/ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET.git
 cd ADVANCED-BUSINESS-DEVELOPMENT-WITH-NET/PetTrack
 ```
 
-2. **Configurar a String de Conexão com Oracle (se necessário):**
-No arquivo `PetTrack.API/appsettings.json`:
-```json
-{
-  "ConnectionStrings": {
-    "PetTrackContextOracle": "Data Source=oracle.fiap.com.br:1521/ORCL;User Id=rm563719;Password=fiap;"
-  }
-}
+2. **Garantir que o MongoDB local está em execução:**
+```powershell
+Get-NetTCPConnection -LocalPort 27017 -State Listen
 ```
 
 3. **Restaurar os Pacotes NuGet:**
@@ -255,37 +381,45 @@ dotnet restore
 dotnet build
 ```
 
-5. **Executar a Suíte de Testes:**
+5. **Executar a Suíte Completa de Testes:**
 ```bash
 dotnet test
 ```
 
-6. **Iniciar a Aplicação:**
+6. **Iniciar a API:**
 ```bash
 dotnet run --project PetTrack.API/PetTrack.API.csproj
 ```
+
+7. **Acessar a Aplicação:**
+- **Swagger UI:** `http://localhost:5084/swagger`
+- **Health Checks:** `http://localhost:5084/health`
+- **Métricas Prometheus:** `http://localhost:5084/metrics`
 
 ---
 
 ## 📦 Tecnologias e Pacotes Utilizados
 
-| Pacote / Tecnologia | Versão | Função no Projeto |
-|---|---|---|
-| **.NET SDK** | 10.0 | Plataforma de desenvolvimento e runtime principal |
-| **Oracle.EntityFrameworkCore** | 9.23.60 | Provedor EF Core oficial para banco Oracle |
-| **Microsoft.EntityFrameworkCore** | 9.0.14 | ORM para mapeamento objeto-relacional |
-| **Serilog.AspNetCore** | 9.0.0 | Structured Logging para Console e arquivos rotativos |
-| **Serilog.Sinks.File** | 6.0.0 | Sink de persistência de log com rotação diária |
-| **AspNetCore.HealthChecks.UI.Client** | 9.0.0 | Serializador padronizado de Health Checks em JSON |
-| **OpenTelemetry.Extensions.Hosting** | 1.11.2 | Framework de observabilidade e tracing distribuído |
-| **OpenTelemetry.Exporter.Prometheus.AspNetCore** | 1.11.2-beta.1 | Exportador de métricas no padrão Prometheus (`/metrics`) |
-| **xUnit** | 2.9.2 | Framework de execução de testes unitários e de integração |
-| **Moq** | 4.20.72 | Framework de Mocking para isolamento de dependências |
-| **FluentAssertions** | 6.12.2 | Assertions fluentes e expressivas nos testes AAA |
-| **Microsoft.AspNetCore.Mvc.Testing** | 9.0.0 | Factory de testes de integração HTTP in-memory |
-| **Microsoft.EntityFrameworkCore.InMemory** | 9.0.0 | Banco de dados em memória para testes de integração |
-| **Swashbuckle.AspNetCore** | 7.2.0 | Documentação interativa via OpenAPI / Swagger UI |
+| Pacote / Tecnologia | Versão | Camada | Função no Projeto |
+|---|---|---|---|
+| **.NET SDK** | 10.0 | Geral | Runtime e SDK de desenvolvimento principal |
+| **Microsoft.AspNetCore.Authentication.JwtBearer** | 10.0.14 | API | Middleware de autenticação JWT Bearer |
+| **System.IdentityModel.Tokens.Jwt** | 8.23.0 | Infrastructure / API | Criação, assinatura e decodificação de tokens JWT |
+| **MongoDB.Driver** | 3.13.0 | Infrastructure | Driver oficial de comunicação e operações NoSQL com MongoDB |
+| **MongoDB.Bson** | 3.13.0 | Domain / Infrastructure | Serialização e mapeamento de documentos BSON |
+| **Oracle.EntityFrameworkCore** | 9.23.60 | Infrastructure | Provedor EF Core oficial para banco Oracle |
+| **Microsoft.EntityFrameworkCore** | 9.0.14 | Infrastructure | ORM para mapeamento objeto-relacional |
+| **Serilog.AspNetCore** | 9.0.0 | API | Structured Logging para console e arquivos rotativos diários |
+| **AspNetCore.HealthChecks.UI.Client** | 9.0.0 | API | Serialização JSON rica para os endpoints de Health Check |
+| **OpenTelemetry.Extensions.Hosting** | 1.12.0 | API | Framework de observabilidade e tracing distribuído |
+| **OpenTelemetry.Exporter.Prometheus.AspNetCore** | 1.12.0-beta.1 | API | Exportação de métricas no padrão Prometheus (`/metrics`) |
+| **xUnit** | 2.9.2 | Testes | Framework de testes unitários e de integração com padrão AAA |
+| **Moq** | 4.20.72 | Testes | Mocking de dependências e isolamento de camadas |
+| **FluentAssertions** | 6.12.2 | Testes | Assertions expressivas e legíveis |
+| **Microsoft.AspNetCore.Mvc.Testing** | 9.0.0 | Testes | WebApplicationFactory para testes de integração HTTP |
+| **Microsoft.EntityFrameworkCore.InMemory** | 9.0.0 | Testes | Banco em memória para isolamento de testes sem onerar o Oracle |
+| **Swashbuckle.AspNetCore** | 7.2.0 | API | Documentação interativa OpenAPI / Swagger UI com Bearer Auth |
 
 ---
 
-> Projeto acadêmico desenvolvido para o **Challenge FIAP 2026** — 2º Ano Análise e Desenvolvimento de Sistemas (Turma 2TDSPF).
+> Projeto desenvolvido para o **Challenge FIAP 2026** — 2º Ano Análise e Desenvolvimento de Sistemas (Turma 2TDSPF).
